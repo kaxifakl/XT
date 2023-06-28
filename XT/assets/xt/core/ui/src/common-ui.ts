@@ -3,7 +3,7 @@ import { BaseUI } from './base-ui';
 const { ccclass, property } = _decorator;
 
 interface IPluginUIData {
-    ui: xt.BaseUI;
+    ui: xt.ui.BaseUI;
     parentNode: Node;
     param?: any;
     group?: string;
@@ -16,9 +16,9 @@ export class CommonUI<T = any> extends BaseUI<T> {
     private pluginUIMap: Map<string, IPluginUIData> = null;
 
     /**添加pluginUI的参数信息,默认group为`common` */
-    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.BaseUI> | string, parentNode: Node, param?: Param): void
-    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.BaseUI> | string, parentNode: Node, group?: string): void;
-    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.BaseUI> | string, parentNode: Node, param?: Param | string, group?: string): void {
+    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, parentNode: Node, param?: Param): void
+    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, parentNode: Node, group?: string): void;
+    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, parentNode: Node, param?: Param | string, group?: string): void {
         let _param = null, _group = null;
         if (typeof param == 'string') {
             _param = null;
@@ -44,9 +44,9 @@ export class CommonUI<T = any> extends BaseUI<T> {
     }
 
     /**显示一个pluginUI,会自动隐藏前一个 */
-    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.BaseUI> | string, param?: Param): void;
-    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.BaseUI> | string, callBack?: (uiComp: xt.BaseUI) => void): void;
-    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.BaseUI> | string, param?: Param | ((uiComp: xt.BaseUI) => void), callBack?: (uiComp: xt.BaseUI) => void): void {
+    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, param?: Param): void;
+    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, callBack?: (uiComp: xt.ui.BaseUI) => void): void;
+    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, param?: Param | ((uiComp: xt.ui.BaseUI) => void), callBack?: (uiComp: xt.ui.BaseUI) => void): void {
 
         let _param = null, _callBack = null;
         if (typeof param === 'function') {
@@ -93,7 +93,7 @@ export class CommonUI<T = any> extends BaseUI<T> {
             _callBack && _callBack(pluginUIData.ui);
         } else {
             xt.uiManager.showUIMask();
-            this.createUI(clazz, pluginUIData.parentNode, _param || pluginUIData.param, (uiComp: xt.BaseUI) => {
+            this.createUI(clazz, pluginUIData.parentNode, _param || pluginUIData.param, (uiComp: xt.ui.BaseUI) => {
                 xt.uiManager.closeUIMask();
                 //关闭相同group的pluginUI
                 if (pluginUIData.group != null) {
@@ -112,7 +112,7 @@ export class CommonUI<T = any> extends BaseUI<T> {
     }
 
     /**关闭一个pluginUI,只是隐藏,不会销毁 */
-    public hidePluginUI(clazz?: xt.Constructor<xt.BaseUI> | string) {
+    public hidePluginUI(clazz?: xt.Constructor<xt.ui.BaseUI> | string) {
         if (this.pluginUIMap == null) {
             return;
         }
@@ -164,12 +164,12 @@ export class CommonUI<T = any> extends BaseUI<T> {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         CommonUI: typeof CommonUI
     }
-    namespace xt {
+    namespace xt.ui {
         type CommonUI = InstanceType<typeof CommonUI>
     }
 }
 
-xt.CommonUI = xt.CommonUI || CommonUI;
+xt.ui.CommonUI = xt.ui.CommonUI || CommonUI;

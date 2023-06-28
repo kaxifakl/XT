@@ -13,12 +13,12 @@ export class ItemUI<T = any> extends BaseUI<T> {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         ItemUI: typeof ItemUI
     }
-    namespace xt {
+    namespace xt.ui {
         type ItemUI = InstanceType<typeof ItemUI>
     }
 }
 
-xt.ItemUI = xt.ItemUI || ItemUI;
+xt.ui.ItemUI = xt.ui.ItemUI || ItemUI;

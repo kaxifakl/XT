@@ -24,7 +24,7 @@ class UIManager {
     }
 
     /**显示UI */
-    public showUI<Param = any, Options extends UIOptions = any>(clazz: xt.Constructor<xt.BaseUI> | string, param?: Param, options?: Options): void {
+    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T> | string, param?: any, options?: xt.UIOptions<T>): void {
         let containerType = options?.containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
         if (container == null) {
@@ -32,15 +32,15 @@ class UIManager {
             return;
         }
 
-        let cls: xt.Constructor<xt.BaseUI>;
+        let cls: xt.Constructor<T>;
         if (typeof clazz === 'string') {
-            cls = js.getClassByName(clazz) as xt.Constructor<xt.BaseUI>;
+            cls = js.getClassByName(clazz) as xt.Constructor<T>;
         } else {
-            cls = clazz as xt.Constructor<xt.BaseUI>;
+            cls = clazz as xt.Constructor<T>;
         }
 
         if (options == null) {
-            options = {} as Options;
+            options = {} as xt.UIOptions<T>;
         }
         if (options.uiParentNode == null) {
             let superName = this.getSuperName(cls);
@@ -58,7 +58,7 @@ class UIManager {
         container.showUI(cls, param, options);
     }
 
-    public closeUI<Options extends UIOptions = any>(clazz: xt.Constructor<xt.BaseUI> | string, options?: Options): void {
+    public closeUI<T>(clazz: xt.Constructor<T> | string, options?: xt.UIOptions<T>): void {
         let containerType = options?.containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
         if (container == null) {
@@ -66,11 +66,11 @@ class UIManager {
             return;
         }
 
-        let cls: xt.Constructor<xt.BaseUI>;
+        let cls: xt.Constructor<T>;
         if (typeof clazz === 'string') {
-            cls = js.getClassByName(clazz) as xt.Constructor<xt.BaseUI>;
+            cls = js.getClassByName(clazz) as xt.Constructor<T>;
         } else {
-            cls = clazz as xt.Constructor<xt.BaseUI>;
+            cls = clazz as xt.Constructor<T>;
         }
 
         //@ts-ignore
@@ -110,7 +110,7 @@ class UIManager {
     }
 
     /**获取当前UI */
-    public getCurrentUI(containerType: string = null): xt.BaseUI {
+    public getCurrentUI(containerType: string = null): xt.ui.BaseUI {
         containerType = containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
         if (container == null) {
@@ -120,11 +120,11 @@ class UIManager {
         container.getCurrentUI();
     }
 
-    private getSuperName(cls: xt.Constructor<xt.BaseUI>): string {
+    private getSuperName(cls: xt.Constructor<xt.ui.BaseUI>): string {
         let superCls = js.getSuper(cls);
         let superName = js.getClassName(superCls);
-        let windowClsName = js.getClassName(xt.WindowUI);
-        let popClsName = js.getClassName(xt.PopUI);
+        let windowClsName = js.getClassName(xt.ui.WindowUI);
+        let popClsName = js.getClassName(xt.ui.PopUI);
         while (superCls != null) {
             if (superName == windowClsName || superName == popClsName) {
                 superCls = null;
@@ -148,18 +148,18 @@ declare global {
             uiMaskNode?: Node;
         }
         interface IUIContainer {
-            showUI<Param = any, Options extends UIOptions = any>(clazz: Constructor<xt.BaseUI>, param: Param, options: Options): void;
-            closeUI(clazz: Constructor<xt.BaseUI>): void
+            showUI<T extends xt.ui.BaseUI>(clazz: Constructor<T>, param: any, options: xt.UIOptions<T>): void;
+            closeUI<T>(clazz: Constructor<T>): void
             closeAllUI(): void;
-            getCurrentUI(): xt.BaseUI;
+            getCurrentUI(): xt.ui.BaseUI;
         }
-    }
-    interface UIOptions {
-        containerType?: string;
-        callBack?: (uiComp: xt.BaseUI) => void;
-        uiParentNode?: Node;
-        prefabUrl?: string;
-        superName?: string
+        interface UIOptions<T> {
+            containerType?: string;
+            callBack?: (uiComp: T) => void;
+            uiParentNode?: Node;
+            prefabUrl?: string;
+            superName?: string
+        }
     }
 }
 

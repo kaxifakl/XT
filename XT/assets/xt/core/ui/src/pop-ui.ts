@@ -6,12 +6,12 @@ export class PopUI<T = any> extends CommonUI<T> {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         PopUI: typeof PopUI
     }
-    namespace xt {
+    namespace xt.ui {
         type PopUI = InstanceType<typeof PopUI>
     }
 }
 
-xt.PopUI = xt.PopUI || PopUI;
+xt.ui.PopUI = xt.ui.PopUI || PopUI;

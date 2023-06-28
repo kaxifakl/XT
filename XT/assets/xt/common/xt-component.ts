@@ -58,7 +58,7 @@ export class XTComponent extends Component {
             let uiNode = instantiate(prefab);
             let comp = uiNode.getComponent(cls);
             if (!comp) {
-                xt.error('预制体为绑定脚本', prefabUrl, className);
+                xt.error('预制体未绑定脚本', prefabUrl, className);
                 return;
             }
             comp.loaderKey = options?.loaderKey || className;

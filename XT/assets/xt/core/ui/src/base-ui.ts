@@ -55,12 +55,12 @@ export class BaseUI<T = any> extends XTComponent {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         BaseUI: typeof BaseUI
     }
-    namespace xt {
+    namespace xt.ui {
         type BaseUI = InstanceType<typeof BaseUI>
     }
 }
 
-xt.BaseUI = xt.BaseUI || BaseUI;
+xt.ui.BaseUI = xt.ui.BaseUI || BaseUI;

@@ -7,12 +7,12 @@ export class WindowUI<T = any> extends CommonUI<T> {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         WindowUI: typeof WindowUI
     }
-    namespace xt {
+    namespace xt.ui {
         type WindowUI = InstanceType<typeof WindowUI>
     }
 }
 
-xt.WindowUI = xt.WindowUI || WindowUI;
+xt.ui.WindowUI = xt.ui.WindowUI || WindowUI;

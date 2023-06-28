@@ -1,11 +1,11 @@
 import { js } from 'cc';
 
-class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
+class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer {
 
-    private uiStack: xt.BaseUI[] = [];
+    private uiStack: xt.ui.BaseUI[] = [];
     private uiMap: Map<string, number> = new Map();
 
-    public showUI<Param = any, Options extends UIOptions = any>(clazz: xt.Constructor<xt.BaseUI>, param: Param, options: Options): void {
+    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T>, param: any, options: xt.UIOptions<T>): void {
         let className = js.getClassName(clazz);
         let uiIndex = this.uiMap.get(className);
         if (uiIndex != null) {
@@ -17,7 +17,7 @@ class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
             this.setUIActive(ui, true);
         } else {
             xt.uiManager.showUIMask();
-            xt.XTComponent.prototype.createComponentNode(clazz, (comp: xt.BaseUI) => {
+            xt.XTComponent.prototype.createComponentNode(clazz, (comp: T) => {
                 xt.uiManager.closeUIMask();
                 //处理先前UI
                 this.solveAnteriorUI(comp);
@@ -31,7 +31,7 @@ class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
         }
     }
 
-    public closeUI(clazz: xt.Constructor<xt.BaseUI>): void {
+    public closeUI<T>(clazz: xt.Constructor<T>): void {
         let className = js.getClassName(clazz);
         let uiIndex = this.uiMap.get(className);
         if (uiIndex == null) {
@@ -68,16 +68,16 @@ class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
     }
 
     /**处理先前的UI */
-    private solveAnteriorUI(nextUI: xt.BaseUI): void {
+    private solveAnteriorUI(nextUI: xt.ui.BaseUI): void {
         if (this.uiStack.length === 0) {
             return;
         }
-        if (nextUI instanceof xt.WindowUI) {
+        if (nextUI instanceof xt.ui.WindowUI) {
             //新的弹窗是窗口,循环关闭前一个UI,直到窗口UI
             for (let i = this.uiStack.length - 1; i >= 0; i--) {
                 let ui = this.uiStack[i];
                 this.setUIActive(ui, false);
-                if (ui instanceof xt.WindowUI) {
+                if (ui instanceof xt.ui.WindowUI) {
                     break;
                 }
             }
@@ -92,7 +92,7 @@ class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
         for (let i = this.uiStack.length - 1; i >= 0; i--) {
             let ui = this.uiStack[i];
             this.setUIActive(ui, true);
-            if (ui instanceof xt.WindowUI) {
+            if (ui instanceof xt.ui.WindowUI) {
                 break;
             }
         }
@@ -107,7 +107,7 @@ class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
     }
 
     /**销毁UI */
-    private destroyUI(ui: xt.BaseUI): void {
+    private destroyUI(ui: xt.ui.BaseUI): void {
         let className = js.getClassName(ui);
         ui.onClose();
         ui.removeAllListener();
@@ -116,7 +116,7 @@ class UIStackContainer extends xt.BaseUIContainer implements xt.IUIContainer {
         this.uiMap.delete(className);
     }
 
-    public getCurrentUI(): xt.BaseUI {
+    public getCurrentUI(): xt.ui.BaseUI {
         return this.uiStack[this.uiStack.length - 1];
     }
 }

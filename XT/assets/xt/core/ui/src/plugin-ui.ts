@@ -9,12 +9,12 @@ export class PluginUI<T = any> extends CommonUI<T> {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         PluginUI: typeof PluginUI
     }
-    namespace xt {
+    namespace xt.ui {
         type PluginUI = InstanceType<typeof PluginUI>
     }
 }
 
-xt.PluginUI = xt.PluginUI || PluginUI;
+xt.ui.PluginUI = xt.ui.PluginUI || PluginUI;

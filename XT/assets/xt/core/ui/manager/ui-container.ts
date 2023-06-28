@@ -1,6 +1,6 @@
 /**UI容器基类 */
 class BaseUIContainer {
-    protected setUIActive(ui: xt.BaseUI, state: boolean): void {
+    protected setUIActive(ui: xt.ui.BaseUI, state: boolean): void {
         if (ui.node.active == true && state == false) {
             ui.node.active = false;
         } else if (ui.node.active == false && state == true) {
@@ -10,14 +10,14 @@ class BaseUIContainer {
 }
 
 declare global {
-    interface IXT {
+    interface IUI {
         BaseUIContainer: typeof BaseUIContainer
     }
-    namespace xt {
+    namespace xt.ui {
         type BaseUIContainer = InstanceType<typeof BaseUIContainer>
     }
 }
 
 export { }
 
-xt.BaseUIContainer = xt.BaseUIContainer || BaseUIContainer;
+xt.ui.BaseUIContainer = xt.ui.BaseUIContainer || BaseUIContainer;
