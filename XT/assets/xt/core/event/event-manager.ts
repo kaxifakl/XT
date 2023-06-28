@@ -108,7 +108,7 @@ class EventManager {
             return;
         }
         handlerMap.forEach((triggerData, handlerType) => {
-            triggerData.handler(...args);
+            triggerData.handler.call(target, ...args);
             if (triggerData.once) {
                 handlerMap.delete(handlerType);
             }
