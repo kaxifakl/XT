@@ -9,12 +9,13 @@ export class XTComponent extends Component {
     /**加载器Key */
     public loaderKey: string = null;
 
-    public registerBtnClickEvent(button: Button, clickCall: any): void {
+    public registerBtnClickEvent(button: Button, clickCall: any, target?: any): void {
+        target = target || this;
         let handler = new EventHandler();
         handler.handler = clickCall;
         handler.emit = (params: any[]) => {
             if (isValid(this, true) && typeof handler.handler == 'function') {
-                (handler.handler as any)(...params);
+                (handler.handler as Function).call(target, ...params);
             }
         }
         button.clickEvents.push(handler)
