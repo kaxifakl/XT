@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>全局注入 | XT</title>
+    <meta name="generator" content="VuePress 1.9.9">
+    
+    <meta name="description" content="Just playing around">
+    
+    <link rel="preload" href="/assets/css/0.styles.709ce88b.css" as="style"><link rel="preload" href="/assets/js/app.fad489d6.js" as="script"><link rel="preload" href="/assets/js/2.b8815987.js" as="script"><link rel="preload" href="/assets/js/6.69bbbe37.js" as="script"><link rel="prefetch" href="/assets/js/10.d562bc56.js"><link rel="prefetch" href="/assets/js/11.8910880d.js"><link rel="prefetch" href="/assets/js/3.5f3d5cec.js"><link rel="prefetch" href="/assets/js/4.293d7899.js"><link rel="prefetch" href="/assets/js/5.f85ebf81.js"><link rel="prefetch" href="/assets/js/7.87a3ae23.js"><link rel="prefetch" href="/assets/js/8.ea4c0260.js"><link rel="prefetch" href="/assets/js/9.47a962ed.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.709ce88b.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">XT</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/kaxifakl/XT" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/kaxifakl/XT" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>简介</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/" aria-current="page" class="sidebar-link">XT框架</a></li><li><a href="/start/install.html" class="sidebar-link">安装</a></li><li><a href="/start/content.html" class="sidebar-link">目录结构</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>模块</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/page/global.html" aria-current="page" class="active sidebar-link">全局注入</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="全局注入"><a href="#全局注入" class="header-anchor">#</a> 全局注入</h1> <p><strong>XT通过Ts的declare、interface、namespace等特性来实现全局提示与注入</strong></p> <h2 id="xt-js"><a href="#xt-js" class="header-anchor">#</a> xt.js</h2> <p>xt全局文件，通过勾选为插件，来使Cocos最先加载这个脚本，当其他ts文件加载时window.xt存在
+<img src="/assets/img/1.dd521490.png" alt="img"></p> <h2 id="xt-ts"><a href="#xt-ts" class="header-anchor">#</a> xt.ts</h2> <p>xt提示文件，用于xt代码提示</p> <h2 id="全局注入语法"><a href="#全局注入语法" class="header-anchor">#</a> 全局注入语法</h2> <p>通过接口，我们可以在任何脚本中补充该接口的属性，这边xt的类型是IXT接口,所以其他任何IXT接口中的属性，都可以在xt下点出来，xt.util也是同样的实现</p> <p>这样我们就可以用这个方法组建xt空间下的各个模块</p> <div class="language-js extra-class"><pre class="language-js"><code>declare global <span class="token punctuation">{</span>
+	<span class="token keyword">const</span> <span class="token literal-property property">xt</span><span class="token operator">:</span> <span class="token constant">IXT</span><span class="token punctuation">;</span>
+	<span class="token keyword">interface</span> <span class="token class-name">IXT</span><span class="token punctuation">{</span>
+		<span class="token literal-property property">util</span><span class="token operator">:</span> IUtil
+	<span class="token punctuation">}</span>
+    <span class="token keyword">interface</span> <span class="token class-name">IUtil</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre></div><p><img src="/assets/img/2.d5d008a9.png" alt="img"></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/start/content.html" class="prev">
+        目录结构
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.fad489d6.js" defer></script><script src="/assets/js/2.b8815987.js" defer></script><script src="/assets/js/6.69bbbe37.js" defer></script>
+  </body>
+</html>
