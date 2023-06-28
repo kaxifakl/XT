@@ -23,7 +23,7 @@ export class XTComponent extends Component {
 
     public unregisterBtnClickEvent(button: Button, clickCall: any): void {
         let events = button.clickEvents
-        for (let i = 0, len = events.length; i < len; i++) {
+        for (let i = events.length - 1; i >= 0; i--) {
             if (events[i].handler == clickCall) {
                 events.splice(i, 1);
             }
