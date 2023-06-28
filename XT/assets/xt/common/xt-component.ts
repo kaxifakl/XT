@@ -1,6 +1,7 @@
 import { _decorator, Button, Component, EventHandler, instantiate, isValid, js, Node, Prefab, Sprite, SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
 
+/**XT组件基类 */
 @ccclass('XTComponent')
 export class XTComponent extends Component {
     public static __$prefabUrl: string = null;
@@ -9,6 +10,11 @@ export class XTComponent extends Component {
     /**加载器Key */
     public loaderKey: string = null;
 
+    /**注册按钮点击事件
+     * @param button 按钮组件
+     * @param clickCall 点击回调
+     * @param target 回调指向的target,默认为this
+     */
     public registerBtnClickEvent(button: Button, clickCall: any, target?: any): void {
         target = target || this;
         let handler = new EventHandler();
@@ -21,6 +27,10 @@ export class XTComponent extends Component {
         button.clickEvents.push(handler)
     }
 
+    /**注销按钮点击事件
+     * @param button 按钮组件
+     * @param clickCall 点击回调
+     */
     public unregisterBtnClickEvent(button: Button, clickCall: any): void {
         let events = button.clickEvents
         for (let i = events.length - 1; i >= 0; i--) {
@@ -67,10 +77,16 @@ export class XTComponent extends Component {
         }, cls.__$bundle)
     }
 
+    /**移除当前组件所有全局事件 */
     public removeAllListener() {
         xt.eventManager.offByTarget(this);
     }
 
+    /**动态加载spriteFrame
+     * @param sprite Sprite组件
+     * @param spriteFrameUrl spriteFrame地址
+     * @param bundle AssetBundle名
+     */
     public loadSpriteFrame(sprite: Sprite, spriteFrameUrl: string, bundle?: string): void {
         let loader = xt.loaderManager.getLoader(this.loaderKey);
         loader.load(spriteFrameUrl, SpriteFrame, (asset: SpriteFrame) => {
@@ -91,12 +107,16 @@ export class XTComponent extends Component {
 
 declare global {
     interface IXT {
+        /**XT组件基类 */
         XTComponent: typeof XTComponent
     }
     namespace xt {
         type XTComponent = InstanceType<typeof XTComponent>
+        /**组件创建参数 */
         interface ComponentCreateOptions {
+            /**加载器key */
             loaderKey?: string;
+            /**预制体地址 */
             prefabUrl?: string;
         }
     }

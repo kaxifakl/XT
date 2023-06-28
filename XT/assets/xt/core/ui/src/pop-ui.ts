@@ -7,6 +7,7 @@ export class PopUI<T = any> extends CommonUI<T> {
 
 declare global {
     interface IUI {
+        /**弹窗基类 */
         PopUI: typeof PopUI
     }
     namespace xt.ui {

@@ -15,10 +15,25 @@ export class CommonUI<T = any> extends BaseUI<T> {
     /**pluginUI的map */
     private pluginUIMap: Map<string, IPluginUIData> = null;
 
-    /**添加pluginUI的参数信息,默认group为`common` */
-    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, parentNode: Node, param?: Param): void
-    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, parentNode: Node, group?: string): void;
-    public addPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, parentNode: Node, param?: Param | string, group?: string): void {
+    /**添加pluginUI的参数信息,默认group为`common`
+     * @param clazz UI类名或类字符串
+     * @param parentNode 父节点
+     * @param param 参数
+     */
+    public addPluginUI<T extends xt.ui.BaseUI, Param extends Object>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: Param): void
+    /**添加pluginUI的参数信息,默认group为`common` 
+     * @param clazz UI类名或类字符串
+     * @param parentNode 父节点
+     * @param group 所属group
+     */
+    public addPluginUI<T extends xt.ui.BaseUI, Param extends Object>(clazz: xt.Constructor<T> | string, parentNode: Node, group?: string): void;
+    /**添加pluginUI的参数信息,默认group为`common` 
+     * @param clazz UI类名或类字符串
+     * @param parentNode 父节点
+     * @param param 参数
+     * @param group 所属group
+     */
+    public addPluginUI<T extends xt.ui.BaseUI, Param extends Object>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: Param | string, group?: string): void {
         let _param = null, _group = null;
         if (typeof param == 'string') {
             _param = null;
@@ -43,10 +58,23 @@ export class CommonUI<T = any> extends BaseUI<T> {
         this.pluginUIMap.set(className, { ui: null, parentNode: parentNode, param: _param, group: _group, state: false });
     }
 
-    /**显示一个pluginUI,会自动隐藏前一个 */
-    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, param?: Param): void;
-    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, callBack?: (uiComp: xt.ui.BaseUI) => void): void;
-    public showPluginUI<Param = any>(clazz: xt.Constructor<xt.ui.BaseUI> | string, param?: Param | ((uiComp: xt.ui.BaseUI) => void), callBack?: (uiComp: xt.ui.BaseUI) => void): void {
+    /**显示一个pluginUI,会自动隐藏前一个同group的pluginUI
+     * @param clazz UI类名或类字符串
+     * @param param 参数
+     */
+    public showPluginUI<T extends xt.ui.BaseUI, Param extends Object>(clazz: xt.Constructor<T> | string, param?: Param): void;
+    /**显示一个pluginUI,会自动隐藏前一个同group的pluginUI
+     * @param clazz UI类名或类字符串
+     * @param callBack 回调
+     */
+    public showPluginUI<T extends xt.ui.BaseUI, Param extends Object>(clazz: xt.Constructor<T> | string, callBack?: (uiComp: T) => void): void;
+    /**显示一个pluginUI,会自动隐藏前一个同group的pluginUI
+     * @param clazz UI类名或类字符串
+     * @param param 参数
+     * @param callBack 回调
+     * @returns 
+     */
+    public showPluginUI<T extends xt.ui.BaseUI, Param extends Object>(clazz: xt.Constructor<T> | string, param?: Param | ((uiComp: T) => void), callBack?: (uiComp: xt.ui.BaseUI) => void): void {
 
         let _param = null, _callBack = null;
         if (typeof param === 'function') {
@@ -111,7 +139,10 @@ export class CommonUI<T = any> extends BaseUI<T> {
         }
     }
 
-    /**关闭一个pluginUI,只是隐藏,不会销毁 */
+    /**关闭一个pluginUI,只是隐藏,不会销毁
+     * @param clazz UI类名或类字符串
+     * @returns 
+     */
     public hidePluginUI(clazz?: xt.Constructor<xt.ui.BaseUI> | string) {
         if (this.pluginUIMap == null) {
             return;
@@ -165,6 +196,7 @@ export class CommonUI<T = any> extends BaseUI<T> {
 
 declare global {
     interface IUI {
+        /**可添加PluginUI的通用UI基类 */
         CommonUI: typeof CommonUI
     }
     namespace xt.ui {

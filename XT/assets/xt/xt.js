@@ -1,10 +1,11 @@
-let _xt = {};
-_xt['util'] = _xt['util'] || {};
-_xt['config'] = _xt['config'] || {};
-_xt['enum'] = _xt['enum'] || {};
-_xt['game'] = _xt['game'] || {};
-_xt['ui'] = _xt['ui'] || {};
-_xt['data'] = _xt['data'] || {};
+let _xt = {
+    util: {},
+    config: {},
+    enum: {},
+    game: {},
+    ui: {},
+    data: {},
+};
 window['xt'] = window['xt'] || _xt;
 
 function prefabUrl(prefabUrl, bundle) {

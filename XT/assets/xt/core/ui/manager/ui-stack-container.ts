@@ -5,7 +5,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
     private uiStack: xt.ui.BaseUI[] = [];
     private uiMap: Map<string, number> = new Map();
 
-    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T>, param: any, options: xt.UIOptions<T>): void {
+    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T>, param: any, options: xt.IUIOptions<T>): void {
         let className = js.getClassName(clazz);
         let uiIndex = this.uiMap.get(className);
         if (uiIndex != null) {

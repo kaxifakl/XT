@@ -2,6 +2,7 @@ import { _decorator, Component, js, Node } from 'cc';
 import { XTComponent } from '../../../common/xt-component';
 const { ccclass, property } = _decorator;
 
+/**UI基类 */
 @ccclass('BaseUI')
 export class BaseUI<T = any> extends XTComponent {
     /**参数 */
@@ -22,17 +23,39 @@ export class BaseUI<T = any> extends XTComponent {
     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
      * @param clazz 类名或类
      * @param parentNode 父节点
+     * @returns 
+     */
+    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node): void;
+    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+     * @param clazz 类名或类
+     * @param parentNode 父节点
+     * @param callBack 回调
+     * @returns 
+     */
+    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (uiComp: T) => void): void;
+     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+     * @param clazz 类名或类
+     * @param parentNode 父节点
+     * @param param 参数
+     * @returns 
+     */
+    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param): void;
+     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+     * @param clazz 类名或类
+     * @param parentNode 父节点
      * @param param 参数
      * @param callBack 回调
      * @returns 
      */
-
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node): void;
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (uiComp: T) => void): void;
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param): void;
     public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param, callBack: (uiComp: T) => void): void;
+     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+     * @param clazz 类名或类
+     * @param parentNode 父节点
+     * @param param 参数
+     * @param callBack 回调
+     * @returns 
+     */
     public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: Param | ((uiComp: T) => void), callBack?: (uiComp: T) => void): void {
-
         let _param = null;
         let _callback = null;
         if (typeof callBack === 'function') {
@@ -56,6 +79,7 @@ export class BaseUI<T = any> extends XTComponent {
 
 declare global {
     interface IUI {
+        /**UI基类 */
         BaseUI: typeof BaseUI
     }
     namespace xt.ui {

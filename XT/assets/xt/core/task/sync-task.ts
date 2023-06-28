@@ -5,6 +5,10 @@ class SyncTask {
 
     private finishCall: () => void = null;
 
+    /**
+     * @param keys 标识key数组
+     * @param finishCall 所有异步任务执行完成后的回调
+     */
     constructor(keys: string[], finishCall: () => void) {
         this.finishCall = finishCall;
         this.totalCount = keys.length;
@@ -13,6 +17,10 @@ class SyncTask {
         }
     }
 
+    /**一个任务执行完成后调用,记录该任务已经完成
+     * @param key 标识key
+     * @returns 
+     */
     public finish(key: string): boolean {
         let state = this.keyMap.get(key);
         if (state == null) {
@@ -37,6 +45,7 @@ class SyncTask {
 
 declare global {
     interface IXT {
+        /**异步任务 */
         SyncTask: typeof SyncTask
     }
     namespace xt {

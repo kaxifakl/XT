@@ -42,6 +42,7 @@ class Timer {
 
 declare global {
     interface IXT {
+        /**计时器 */
         Timer: typeof Timer
     }
     namespace xt {

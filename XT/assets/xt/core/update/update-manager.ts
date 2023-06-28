@@ -35,13 +35,17 @@ class UpdateManager implements ISchedulable {
         this.state = xt.enum.UpdateState.Start;
     }
 
-    /**注册系统 */
+    /**注册系统
+     * @param system 
+     */
     public registerSystem(system: xt.IUpdateSystem): void {
         system.id = system.id || xt.symbolKey.getKey();
         this.updateSystemMap.set(system.id, system);
     }
 
-    /**注销系统 */
+    /**注销系统
+     * @param system 
+     */
     public unregisterSystem(system: xt.IUpdateSystem): void {
         this.updateSystemMap.delete(system.id);
     }
@@ -49,6 +53,7 @@ class UpdateManager implements ISchedulable {
 
 declare global {
     interface IXT {
+        /**循环系统 */
         updateManager: UpdateManager
     }
     namespace xt {

@@ -7,7 +7,16 @@ declare global {
 }
 export { }
 
+/**加载AssetBundle
+ * @param bundleOrUrls bundle名或地址
+ * @param onFinish 完成回调
+ */
 function loadBundles(bundleOrUrls: string | string[], onFinish: xt.BundleOnFinish): void;
+/**加载AssetBundle
+ * @param bundleOrUrls bundle名或地址
+ * @param onProgress 进度回调
+ * @param onFinish 完成回调
+ */
 function loadBundles(bundleOrUrls: string | string[], onProgress: xt.BundleOnProgress, onFinish: xt.BundleOnFinish): void;
 function loadBundles(bundleOrUrls: string | string[], onProgress?: xt.BundleOnProgress | xt.BundleOnFinish, onFinish?: xt.BundleOnFinish): void {
     if (onFinish == null) {

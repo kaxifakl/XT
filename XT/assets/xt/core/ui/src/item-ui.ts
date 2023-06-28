@@ -3,7 +3,9 @@ import { BaseUI } from './base-ui';
 const { ccclass, property } = _decorator;
 @ccclass('ItemUI')
 export class ItemUI<T = any> extends BaseUI<T> {
-
+    /**关闭Item
+     * @param callBack 回调
+     */
     public close(callBack?: any): void {
         this.onClose();
         this.removeAllListener();
@@ -14,6 +16,7 @@ export class ItemUI<T = any> extends BaseUI<T> {
 
 declare global {
     interface IUI {
+        /**部件ItemUI基类 */
         ItemUI: typeof ItemUI
     }
     namespace xt.ui {

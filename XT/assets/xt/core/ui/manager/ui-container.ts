@@ -1,4 +1,3 @@
-/**UI容器基类 */
 class BaseUIContainer {
     protected setUIActive(ui: xt.ui.BaseUI, state: boolean): void {
         if (ui.node.active == true && state == false) {
@@ -11,6 +10,7 @@ class BaseUIContainer {
 
 declare global {
     interface IUI {
+        /**UI容器基类 */
         BaseUIContainer: typeof BaseUIContainer
     }
     namespace xt.ui {

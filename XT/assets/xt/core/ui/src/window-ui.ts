@@ -8,6 +8,7 @@ export class WindowUI<T = any> extends CommonUI<T> {
 
 declare global {
     interface IUI {
+        /**全屏页面基类 */
         WindowUI: typeof WindowUI
     }
     namespace xt.ui {

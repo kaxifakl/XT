@@ -2,6 +2,9 @@ import '../extern/log';
 
 const DEFAULT_BUNDLE = 'resources';
 
+/**初始化
+ * @param options 参数
+ */
 function init(options?: xt.IXTOptions) {
     xt.config.DEFAULT_BUNDLE = options?.defaultBundle || DEFAULT_BUNDLE;
     xt.updateManager.init();
@@ -11,6 +14,7 @@ function init(options?: xt.IXTOptions) {
 
 declare global {
     interface IConfig {
+        /**内置默认bundle */
         DEFAULT_BUNDLE: string
     }
     interface IXT {
@@ -19,6 +23,7 @@ declare global {
     }
     namespace xt {
         interface IXTOptions {
+            /**设置默认bundle */
             defaultBundle: string
         }
     }

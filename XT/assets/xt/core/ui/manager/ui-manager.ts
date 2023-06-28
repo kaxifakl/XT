@@ -23,8 +23,13 @@ class UIManager {
         this.uiContainerMap.set(BuildinContainerType.Stack, container);
     }
 
-    /**显示UI */
-    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T> | string, param?: any, options?: xt.UIOptions<T>): void {
+    /**显示UI
+     * @param clazz UI类或类字符串
+     * @param param 传递的参数
+     * @param options 参数
+     * @returns 
+     */
+    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T> | string, param?: any, options?: xt.IUIOptions<T>): void {
         let containerType = options?.containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
         if (container == null) {
@@ -40,7 +45,7 @@ class UIManager {
         }
 
         if (options == null) {
-            options = {} as xt.UIOptions<T>;
+            options = {} as xt.IUIOptions<T>;
         }
         if (options.uiParentNode == null) {
             let superName = this.getSuperName(cls);
@@ -58,8 +63,13 @@ class UIManager {
         container.showUI(cls, param, options);
     }
 
-    public closeUI<T>(clazz: xt.Constructor<T> | string, options?: xt.UIOptions<T>): void {
-        let containerType = options?.containerType || this.DEFAULT_CONTAINER;
+    /**关闭UI
+     * @param clazz UI类或类字符串
+     * @param options 参数
+     * @returns 
+     */
+    public closeUI<T>(clazz: xt.Constructor<T> | string, containerType: string = null): void {
+        containerType = containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
         if (container == null) {
             console.error(`没有找到该容器: ${containerType}`);
@@ -81,6 +91,10 @@ class UIManager {
         container.closeUI(cls);
     }
 
+    /**关闭所有UI
+     * @param containerType UI容器,默认为栈容器
+     * @returns 
+     */
     public closeAllUI(containerType: string = null): void {
         containerType = containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
@@ -109,7 +123,10 @@ class UIManager {
         this.uiMaskNode.active = false;
     }
 
-    /**获取当前UI */
+    /**获取当前UI
+     * @param containerType UI容器,默认为栈容器
+     * @returns 
+     */
     public getCurrentUI(containerType: string = null): xt.ui.BaseUI {
         containerType = containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
@@ -120,6 +137,7 @@ class UIManager {
         container.getCurrentUI();
     }
 
+    /**获取该类的基类名，用于区分WindowUI和PopUI */
     private getSuperName(cls: xt.Constructor<xt.ui.BaseUI>): string {
         let superCls = js.getSuper(cls);
         let superName = js.getClassName(superCls);
@@ -144,20 +162,30 @@ declare global {
     }
     namespace xt {
         interface IUIManagerParam {
+            /**UI根节点 */
             uiParentNode?: Node;
+            /**遮罩节点 */
             uiMaskNode?: Node;
         }
         interface IUIContainer {
-            showUI<T extends xt.ui.BaseUI>(clazz: Constructor<T>, param: any, options: xt.UIOptions<T>): void;
+            showUI<T extends xt.ui.BaseUI>(clazz: Constructor<T>, param: any, options: xt.IUIOptions<T>): void;
             closeUI<T>(clazz: Constructor<T>): void
             closeAllUI(): void;
             getCurrentUI(): xt.ui.BaseUI;
         }
-        interface UIOptions<T> {
-            containerType?: string;
+        interface IUIOptions<T> {
+            /**容器类型 */
+            containerType?: BuildinContainerType;
+            /**UI显示后回调
+             * @param uiComp 显示的UI
+             * @returns 
+             */
             callBack?: (uiComp: T) => void;
+            /**UI父节点,默认为UI根节点 */
             uiParentNode?: Node;
+            /**预制体地址,默认由prefabUrl提供 */
             prefabUrl?: string;
+            /**UI基类名,内部使用 */
             superName?: string
         }
     }

@@ -19,7 +19,7 @@ declare global {
         type BundleOnProgress = (finished: number, total: number) => void;
         type BundleOnFinish = () => void;
 
-        type HandlerType = (...args: any[]) => any;
+        type EventHandler = (...args: any[]) => any;
     }
 }
 

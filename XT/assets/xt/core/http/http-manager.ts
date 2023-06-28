@@ -1,4 +1,8 @@
 class HttpManager {
+    /**Get请求
+     * @param url 地址
+     * @param param 参数
+     */
     public get(url: string, param?: xt.IHttpParam): void {
         let xhr = new XMLHttpRequest();
         xhr.responseType = param?.responseType || 'json';
@@ -24,15 +28,20 @@ class HttpManager {
         }
 
         xhr.open("GET", url, true);
-        if (param && param.head) {
-            for (let key in param.head) {
-                xhr.setRequestHeader(key.toString(), param.head[key]);
+        if (param && param.headers) {
+            for (let key in param.headers) {
+                xhr.setRequestHeader(key.toString(), param.headers[key]);
             }
         }
         xhr.timeout = 10000;
         xhr.send();
     }
 
+    /**Post请求
+     * @param url 地址
+     * @param data 数据
+     * @param param 参数
+     */
     public post(url: string, data: any, param?: xt.IHttpParam) {
         let xhr = new XMLHttpRequest();
         xhr.responseType = param?.responseType || 'json';
@@ -58,9 +67,9 @@ class HttpManager {
         }
 
         xhr.open("POST", url, true);
-        if (param && param.head) {
-            for (let key in param.head) {
-                xhr.setRequestHeader(key.toString(), param.head[key]);
+        if (param && param.headers) {
+            for (let key in param.headers) {
+                xhr.setRequestHeader(key.toString(), param.headers[key]);
             }
         }
         xhr.timeout = 10000;
@@ -70,13 +79,18 @@ class HttpManager {
 
 declare global {
     interface IXT {
+        /**http请求管理类 */
         httpManager: HttpManager
     }
     namespace xt {
         interface IHttpParam {
+            /**成功回调 */
             succCall?: (data: any) => void;
+            /**失败回调 */
             failCall?: () => void;
-            head?: any;
+            /**请求头 */
+            headers?: any;
+            /**数据响应格式 */
             responseType?: XMLHttpRequestResponseType;
         }
     }

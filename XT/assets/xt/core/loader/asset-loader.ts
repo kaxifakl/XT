@@ -6,19 +6,46 @@ import '../../extern/log';
 import '../timer/timer-manager'
 
 class AssetLoader {
+    /**版本标记 */
     private flag: number = 0;
 
+    /**标识key */
     public key: string = null;
 
+    /**单个资源的缓存 */
     public cacheMap: Map<string, Asset> = new Map();
+    /**文件夹资源的缓存 */
     public arrayCacheMap: Map<string, Array<Asset>> = new Map();
 
     constructor(key?: string) {
         this.key = key || xt.symbolKey.getKey();
     }
 
+    /**加载单个资源
+     * @param url 地址
+     * @param type 资源类型
+     * @param onFinish 成功回调
+     * @param bundle AssetBundle名
+     * @returns 
+     */
     public load<T extends Asset>(url: string, type: xt.Constructor<T>, onFinish: xt.AssetOnFinish<T>, bundle?: string): void;
+    /**加载单个资源
+     * @param url 地址
+     * @param type 资源类型
+     * @param onProgress 进度回调
+     * @param onFinish 成功回调
+     * @param bundle AssetBundle名
+     * @returns 
+     */
     public load<T extends Asset>(url: string, type: xt.Constructor<T>, onProgress: xt.AssetOnProgress, onFinish: xt.AssetOnFinish<T>, bundle?: string): void;
+    /**加载单个资源
+     * @param url 地址
+     * @param type 资源类型
+     * @param onProgress 进度回调
+     * @param onFinish 成功回调
+     * @param bundle AssetBundle名
+     * @returns 
+     */
     public load<T extends Asset>(url: string, type: xt.Constructor<T>, onProgress?: xt.AssetOnProgress | xt.AssetOnFinish<T>, onFinish?: xt.AssetOnFinish<T> | string, bundle?: string): void {
         let { onProgress: _onProgress, onFinish: _onFinish, bundle: _bundle } = xt.util.parseLoadArgs(onProgress, onFinish, bundle);
         _bundle = _bundle || xt.config.DEFAULT_BUNDLE;
@@ -54,8 +81,31 @@ class AssetLoader {
         })
     }
 
+    /**加载资源文件夹
+     * @param url 地址
+     * @param type 资源类型
+     * @param onFinish 成功回调
+     * @param bundle AssetBundle名
+     * @returns 
+     */
     public loadDir<T extends Asset>(url: string, type: xt.Constructor<T>, onFinish: xt.AssetsOnFinish<T>, bundle?: string): void;
+    /**加载资源文件夹
+     * @param url 地址
+     * @param type 资源类型
+     * @param onProgress 进度回调
+     * @param onFinish 成功回调
+     * @param bundle AssetBundle名
+     * @returns 
+     */
     public loadDir<T extends Asset>(url: string, type: xt.Constructor<T>, onProgress: xt.AssetOnProgress, onFinish: xt.AssetsOnFinish<T>, bundle?: string): void;
+    /**加载资源文件夹
+     * @param url 地址
+     * @param type 资源类型
+     * @param onProgress 进度回调
+     * @param onFinish 成功回调
+     * @param bundle AssetBundle名
+     * @returns 
+     */
     public loadDir<T extends Asset>(url: string, type: xt.Constructor<T>, onProgress?: xt.AssetOnProgress | xt.AssetsOnFinish<T>, onFinish?: xt.AssetsOnFinish<T> | string, bundle?: string): void {
         let { onProgress: _onProgress, onFinish: _onFinish, bundle: _bundle } = xt.util.parseLoadArgs(onProgress, onFinish, bundle);
         _bundle = _bundle || xt.config.DEFAULT_BUNDLE;
@@ -94,6 +144,9 @@ class AssetLoader {
         })
     }
 
+    /**
+     * 释放资源加载器,默认延时3秒释放资源
+     */
     public release() {
         let asset = this.cacheMap.values();
         let assets = this.arrayCacheMap.values();
@@ -135,6 +188,7 @@ function adapterUrl<T>(url: string, type: xt.Constructor<T>): string {
 
 declare global {
     interface IXT {
+        /**资源加载器 */
         AssetLoader: typeof AssetLoader
     }
     namespace xt {

@@ -4,8 +4,8 @@ class LoaderManager {
     /**缓存模式下loader不会从map中删除 */
     public cacheMode: boolean = false;
 
-    /**获取一个loader
-     * @param key loader key
+    /**获取一个资源加载器
+     * @param key 标识key
      * @returns 
      */
     public getLoader(key: string): xt.AssetLoader {
@@ -18,7 +18,10 @@ class LoaderManager {
         return loader;
     }
 
-    /**归还loader,归还时会自动释放掉loader中的资源 */
+    /**归还loader,归还时会自动释放掉loader中的资源
+     * @param loaderOrLoaderName AssetLoader或加载器的key
+     * @returns 
+     */
     public releaseLoader(loaderOrLoaderName: xt.AssetLoader | string): void {
         if (typeof loaderOrLoaderName === 'string') {
             loaderOrLoaderName = this.loaderMap.get(loaderOrLoaderName);
@@ -37,6 +40,7 @@ class LoaderManager {
 
 declare global {
     interface IXT {
+        /**资源加载器管理类 */
         loaderManager: LoaderManager
     }
 }
