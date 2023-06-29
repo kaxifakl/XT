@@ -1,5 +1,6 @@
 module.exports = {
     title: 'XT',
+    base:"/file-store/XT-doc/",
     description: 'Just playing around',
     themeConfig: {
         nav: [
