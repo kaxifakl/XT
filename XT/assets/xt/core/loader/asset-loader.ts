@@ -71,8 +71,10 @@ class AssetLoader {
                 return;
             }
             if (flag === this.flag) {
-                this.cacheMap.set(cacheKey, asset);
-                asset.addRef();
+                if (!this.cacheMap.has(cacheKey)) {
+                    this.cacheMap.set(cacheKey, asset);
+                    asset.addRef();
+                }
                 _onFinish?.(asset);
             } else {
                 asset.addRef();
@@ -130,9 +132,11 @@ class AssetLoader {
                 return;
             }
             if (flag === this.flag) {
-                this.arrayCacheMap.set(cacheKey, assets);
-                for (let asset of assets) {
-                    asset.addRef();
+                if (!this.arrayCacheMap.has(cacheKey)) {
+                    this.arrayCacheMap.set(cacheKey, assets);
+                    for (let asset of assets) {
+                        asset.addRef();
+                    }
                 }
                 _onFinish?.(assets);
             } else {
