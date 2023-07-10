@@ -22,7 +22,15 @@ module.exports = {
                 collapsable: false,
                 sidebarDepth: 0,
                 children: [
-                    ['/page/global', '全局注入']
+                    ['/page/global', '全局注入'],
+                    ['/page/ui', 'ui'],
+                    ['/page/ui-manager', 'ui-manager'],
+                    ['/page/event', 'event-manager'],
+                    ['/page/http', 'http-manager'],
+                    ['/page/loader', 'asset-loader'],
+                    ['/page/update', 'update-manager'],
+                    ['/page/timer', 'timer-manager'],
+                    ['/page/task', 'task']
                 ]
             }
         ]
