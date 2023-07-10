@@ -3,13 +3,30 @@ class QueueTask {
 
     private finishCall: () => void = null;
 
+
+    /**
+     * @param finishCall 所有任务执行完成后的回调
+     */
+    constructor(finishCall: () => void)
     /**
      * @param queueCalls 任务数组
      * @param finishCall 所有任务执行完成后的回调
      */
-    constructor(queueCalls: ((finish: () => void) => void)[], finishCall: () => void) {
-        this.queueCalls = queueCalls;
-        this.finishCall = finishCall;
+    constructor(queueCalls: ((finish: () => void) => void)[], finishCall: () => void)
+    constructor(queueCalls?: (((finish: () => void) => void)[]) | (() => void), finishCall?: () => void) {
+        if (Array.isArray(queueCalls)) {
+            this.queueCalls = queueCalls;
+            this.finishCall = finishCall;
+        } else {
+            this.finishCall = queueCalls;
+        }
+    }
+
+    /**添加队列任务
+     * @param task 队列任务
+     */
+    public add(task: (finish: () => void) => void): void {
+        this.queueCalls.push(task);
     }
 
     /**开始执行 */
