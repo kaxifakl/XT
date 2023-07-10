@@ -46,8 +46,12 @@ class UpdateManager implements ISchedulable {
     /**注销系统
      * @param system 
      */
-    public unregisterSystem(system: xt.IUpdateSystem): void {
-        this.updateSystemMap.delete(system.id);
+    public unregisterSystem(system: string | xt.IUpdateSystem): void {
+        if (typeof system === 'string') {
+            this.updateSystemMap.delete(system);
+        } else {
+            this.updateSystemMap.delete(system.id);
+        }
     }
 }
 
