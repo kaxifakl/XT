@@ -12,16 +12,26 @@ declare global {
 export class MainUI extends WindowUI {
 
     @property({
-        displayName: '',
+        displayName: 'testBtn',
         type: Button
     })
     private testBtn: Button = null;
 
     @property({
-        displayName: '',
+        displayName: 'SpriteSplash',
         type: Sprite
     })
     private sp: Sprite = null;
+
+    @property({
+        displayName: 'sp2',
+    })
+    private num: number = 0;
+
+    @property({
+        displayName: 'sp3',
+    })
+    private str2: string = '';
 
     start() {
         xt.eventManager.on('a', this.cb2, this); //监听事件

@@ -299,7 +299,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "7d8f9b89-4fd1-4c9f-a3ab-38ec7cded7ca@f9941",
+      "__uuid__": "4f6ae81b-34fb-49cd-8835-5c5461806e7d@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -336,7 +336,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "testBtn",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -689,7 +689,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
+      "width": 101,
       "height": 100
     },
     "_anchorPoint": {
@@ -720,11 +720,13 @@
     "sp": {
       "__id__": 11
     },
+    "num": 0,
+    "str2": "4",
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "fbxgn8bcZAbLKKiPxHqK5u"
+    "fileId": "9frpXhCzVGpYHCKvSRYKWJ"
   },
   {
     "__type__": "cc.PrefabInfo",
