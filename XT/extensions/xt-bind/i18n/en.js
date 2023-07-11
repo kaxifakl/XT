@@ -1,0 +1,1 @@
+"use strict";module.exports={description:"xt nodes automatically bind plug-ins"};

@@ -1,0 +1,33 @@
+{
+    "package_version": 2,
+    "version": "1.0.0",
+    "name": "xt-bind",
+    "description": "i18n:xt-bind.description",
+    "main": "./dist/main.js",
+    "devDependencies": {
+        "@types/node": "^16.0.1",
+        "typescript": "^4.3.4"
+    },
+    "author": "kaxifa",
+    "editor": ">=3.7.3",
+    "scripts": {
+        "build": "tsc -b",
+        "watch": "tsc -w"
+    },
+    "contributions": {
+        "messages": {
+            "bind": {
+                "methods": [
+                    "bind"
+                ]
+            }
+        },
+        "shortcuts": [
+            {
+                "message": "bind",
+                "win": "ctrl+b",
+                "mac": "ctrl+b"
+            }
+        ]
+    }
+}

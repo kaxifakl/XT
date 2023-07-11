@@ -1,0 +1,1 @@
+"use strict";module.exports={description:"xt节点自动绑定插件"};
