@@ -1,4 +1,4 @@
-import '../extern/log';
+import '../extern/log/log';
 
 const DEFAULT_BUNDLE = 'resources';
 

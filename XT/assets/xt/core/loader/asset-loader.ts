@@ -2,7 +2,7 @@ import { Asset, SpriteFrame, Texture2D, assetManager, js } from "cc";
 import '../../util/symbol-key';
 import '../../util/parse';
 import '../../common/config';
-import '../../extern/log';
+import '../../extern/log/log';
 import '../timer/timer-manager'
 
 class AssetLoader {
