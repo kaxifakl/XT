@@ -1,4 +1,6 @@
 import { _decorator, Component, Node, Prefab, SpriteFrame } from 'cc';
+import { NetWebSocketClient } from '../xt/core/net/client/net-ws-client';
+import { NetProtoBufCodec } from '../xt/core/net/codec/net-protobuf-codec';
 const { ccclass, property } = _decorator;
 
 @ccclass('Launcher')
@@ -15,6 +17,11 @@ export class Launcher extends Component {
                 }
             })
         })
+
+        let client = new NetWebSocketClient().init({ url: "" });
+        let codec = new NetProtoBufCodec().init();
+        xt.NetManger.init(client, codec);
+        xt.NetManger.send('1', 2);
     }
 }
 
