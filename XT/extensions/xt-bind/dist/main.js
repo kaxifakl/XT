@@ -41,12 +41,13 @@ exports.methods = {
             for (let key in comp.value) {
                 let valueData = comp.value[key];
                 let displayName = valueData === null || valueData === void 0 ? void 0 : valueData.displayName;
-                if (displayName != '' && displayName != null
+                if (displayName != '' && displayName != null && displayName.startsWith('@')
                     && valueData.type != 'cc.Script'
                     && ((_a = valueData.value) === null || _a === void 0 ? void 0 : _a.uuid) != null) {
                     let resUuid;
+                    let bindName = displayName.replace('@', '');
                     for (let n of nodeTree) {
-                        if (n.name.value == displayName) {
+                        if (n.name.value == bindName) {
                             if (valueData.type == 'cc.Node') {
                                 resUuid = n.uuid.value;
                                 break;
@@ -67,7 +68,7 @@ exports.methods = {
                         }
                     }
                     if (!resUuid) {
-                        console.warn(`未找到 name:${displayName} type:${valueData.type} 的绑定节点`);
+                        console.warn(`未找到 name:${bindName} type:${valueData.type} 的绑定节点`);
                         return;
                     }
                     let res = await Editor.Message.request('scene', 'set-property', {
