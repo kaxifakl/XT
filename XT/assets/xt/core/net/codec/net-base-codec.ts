@@ -4,7 +4,10 @@ export abstract class NetBaseCodec {
 
     public abstract init(...args: any): NetBaseCodec;
 
-    public abstract connect(...args: any): any;
+    public abstract encode(key: xt.INetSendKey, data: xt.INetSendData): any;
+
+    public abstract decode(data?: any): xt.INetDecodeData;
+
 }
 
 declare global {

@@ -12,13 +12,13 @@ declare global {
 export class MainUI extends WindowUI {
 
     @property({
-        displayName: 'testBtn',
+        displayName: '@testBtn',
         type: Button
     })
     private testBtn: Button = null;
 
     @property({
-        displayName: 'SpriteSplash',
+        displayName: '@SpriteSplash',
         type: Sprite
     })
     private sp: Sprite = null;

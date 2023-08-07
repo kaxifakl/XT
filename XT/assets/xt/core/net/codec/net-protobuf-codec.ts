@@ -1,20 +1,16 @@
-import '../net-manager'
 import { NetBaseCodec } from './net-base-codec'
 
 export class NetProtoBufCodec extends NetBaseCodec {
-    constructor() {
-        super();
-    }
 
     public init(): NetProtoBufCodec { return this };
 
-    public connect(): void { };
-}
+    public encode(key: xt.INetSendKey, data?: xt.INetSendData): any {
+        let u = new Uint8Array(123)
+        return u;
+    }
 
-declare global {
-    namespace xt {
-        type NetProtoBufCodec = ThisType<NetProtoBufCodec>
+    public decode(data?: any): xt.INetDecodeData {
+        console.log(data);
+        return { key: 1, data, requestKey: "Abc" }
     }
 }
-
-export { }

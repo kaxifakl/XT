@@ -1,6 +1,8 @@
 import { _decorator, Component, Node, Prefab, SpriteFrame } from 'cc';
 import { NetWebSocketClient } from '../xt/core/net/client/net-ws-client';
 import { NetProtoBufCodec } from '../xt/core/net/codec/net-protobuf-codec';
+import { NetProtoBufRequest } from '../xt/core/net/request/net-protobuf-request';
+import { NetHeartPlugin } from './common/net/NetHeartPlugin';
 const { ccclass, property } = _decorator;
 
 @ccclass('Launcher')
@@ -18,11 +20,15 @@ export class Launcher extends Component {
             })
         })
 
-        let client = new NetWebSocketClient().init({ url: "" });
+        let client = new NetWebSocketClient().init({ url: "ws://127.0.0.1:8781" });
         let codec = new NetProtoBufCodec().init();
-        xt.NetManger.init(client, codec);
-        xt.NetManger.send('1', 2);
+        let request = new NetProtoBufRequest().init();
+        let heartPlugin = new NetHeartPlugin().init();
+
+        xt.netManger.init(client, codec, request, [heartPlugin]);
+        xt.netManger.connect(() => {
+            // xt.netManger.send('Abc', { id: 1 })
+        });
+        // xt.netManger.send("Abc", { id: 1 });
     }
 }
-
-
