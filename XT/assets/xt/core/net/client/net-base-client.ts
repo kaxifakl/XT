@@ -1,12 +1,13 @@
 import '../net-manager'
 
 export abstract class NetBaseClient implements xt.INetClientFunction {
+    public autoConnect: boolean = true;
 
     public abstract init(...args: any): NetBaseClient;
 
     public abstract connect(...args: any): any;
 
-    public abstract close(...args: any): any;
+    public abstract close(force: boolean, ...args: any): any;
 
     public abstract send(...args: any): any;
 

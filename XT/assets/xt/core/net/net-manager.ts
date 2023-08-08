@@ -4,6 +4,8 @@ class NetManger {
     public request: xt.NetBaseRequest = null;
     public plugins: xt.NetBasePlugin[] = null;
 
+    private reconnectTimerId: string = null;
+
     public init(client: xt.NetBaseClient, codec: xt.NetBaseCodec, request: xt.NetBaseRequest, plugins?: xt.NetBasePlugin[]): void {
         this.client = client;
         this.codec = codec;
@@ -12,6 +14,7 @@ class NetManger {
     }
 
     public connect(finishCall?: () => void): void {
+        this.reset();
         this.client.connect(() => {
             for (let plugin of this.plugins) {
                 plugin.onOpen();
@@ -20,15 +23,16 @@ class NetManger {
         });
     }
 
-    public reconnect(finishCall?: () => void): void {
-        this.client.close();
-        xt.timerManager.addTimer(1, () => {
+    private reconnect(finishCall?: () => void): void {
+        this.client.close(true);
+        this.reconnectTimerId = xt.timerManager.addTimer(3, () => {
             this.connect(finishCall)
         }, true)
     }
 
     public close(): void {
-        this.client.close();
+        this.client.close(true);
+        this.reset();
     }
 
     public onMessage(data?: any): void {
@@ -39,11 +43,15 @@ class NetManger {
         this.request.onResponse(decodeData);
     }
 
-    public onClose(data?: any): void {
+    public onClose(autoConnect: boolean, data?: any): void {
         for (let plugin of this.plugins) {
             plugin.onClose();
         }
         this.request.onClose();
+        if (autoConnect) {
+            xt.log('自动重连中...')
+            this.reconnect();
+        }
     }
 
     public send(key: xt.INetRequestKey, callBack?: xt.INetRequestCallBack): void
@@ -65,6 +73,13 @@ class NetManger {
 
     public bindResponseCallBack(key: xt.INetResponseKey, callBack?: xt.INetRequestCallBack): void {
         this.request.bindResponseCallBack(key, callBack);
+    }
+
+    public reset() {
+        if (this.reconnectTimerId) {
+            xt.timerManager.removeTimer(this.reconnectTimerId);
+            this.reconnectTimerId = null;
+        }
     }
 }
 

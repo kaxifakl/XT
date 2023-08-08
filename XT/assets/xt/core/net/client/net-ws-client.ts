@@ -21,6 +21,7 @@ export class NetWebSocketClient extends NetBaseClient {
             xt.error('options参数为空');
             return;
         }
+        this.autoConnect = true;
         this.finishCall = finishCall;
         this.url = this.options.url;
         try {
@@ -48,7 +49,7 @@ export class NetWebSocketClient extends NetBaseClient {
     public onClose(ev: CloseEvent) {
         xt.log('websocket连接已关闭', ev)
         this.reset();
-        xt.netManager.onClose();
+        xt.netManager.onClose(this.autoConnect);
     }
 
     public onError(ev: Event) {
@@ -65,7 +66,8 @@ export class NetWebSocketClient extends NetBaseClient {
         return true;
     }
 
-    public close(...args: any) {
+    public close(force: boolean, ...args: any) {
+        this.autoConnect = !force;
         this.reset();
     }
 
@@ -73,7 +75,6 @@ export class NetWebSocketClient extends NetBaseClient {
         this.ws?.close();
         this.ws = null;
         this.finishCall = null;
-        this.options = null;
     }
 }
 
