@@ -10,7 +10,7 @@ export class NetHeartPlugin extends NetBasePlugin {
     public onOpen(...args: any) {
         console.log('plugin start');
         this.timer = xt.timerManager.addTimer(5, () => {
-            xt.netManger.send('Cbc')
+            xt.netManager.send('Cbc')
         })
     }
 

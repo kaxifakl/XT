@@ -42,18 +42,18 @@ export class NetWebSocketClient extends NetBaseClient {
     }
 
     public onMessage(ev: MessageEvent<any>) {
-        xt.netManger.onMessage(ev.data);
+        xt.netManager.onMessage(ev.data);
     }
 
     public onClose(ev: CloseEvent) {
-        this.reset();
         xt.log('websocket连接已关闭', ev)
-        xt.netManger.onClose();
+        this.reset();
+        xt.netManager.onClose();
     }
 
     public onError(ev: Event) {
-        this.reset();
         xt.log('websocket连接错误', ev)
+        this.reset();
     }
 
     public send(data: any): boolean {

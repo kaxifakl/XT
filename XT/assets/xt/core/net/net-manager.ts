@@ -20,8 +20,11 @@ class NetManger {
         });
     }
 
-    public reconnect(): void {
-
+    public reconnect(finishCall?: () => void): void {
+        this.client.close();
+        xt.timerManager.addTimer(1, () => {
+            this.connect(finishCall)
+        }, true)
     }
 
     public close(): void {
@@ -40,15 +43,16 @@ class NetManger {
         for (let plugin of this.plugins) {
             plugin.onClose();
         }
+        this.request.onClose();
     }
 
-    public send(key: xt.INetSendKey, callBack?: xt.INetResCallBack): void
-    public send(key: xt.INetSendKey, data?: xt.INetSendData | xt.INetResCallBack, callBack?: xt.INetResCallBack): void {
+    public send(key: xt.INetRequestKey, callBack?: xt.INetRequestCallBack): void
+    public send(key: xt.INetRequestKey, data?: xt.INetRequestType | xt.INetRequestCallBack, callBack?: xt.INetRequestCallBack): void {
         if (typeof data == 'function') {
             callBack = data;
             data = null;
         }
-        let encodeData = this.codec.encode(key, data as xt.INetSendData);
+        let encodeData = this.codec.encode(key, data as xt.INetRequestType);
         if (encodeData == null) {
             return;
         }
@@ -58,31 +62,38 @@ class NetManger {
         }
         this.request.onRequest(key, callBack);
     }
+
+    public bindResponseCallBack(key: xt.INetResponseKey, callBack?: xt.INetRequestCallBack): void {
+        this.request.bindResponseCallBack(key, callBack);
+    }
 }
 
 declare global {
     interface IXT {
-        netManger: NetManger
+        netManager: NetManger
     }
     interface INetMsgParams {
-        Abc: {
-            req: { id: number }
-            res: { res: number }
-        }
-        Cbc: {
-            req: { id: number }
-            res: { res: number }
+        None: {
+            req: any
+            res: any
         }
     }
+
+    interface INetKeyPairParams {
+        None2: "None"
+    }
+
     namespace xt {
-        type INetSendKey = keyof INetMsgParams;
-        type INetSendData = INetMsgParams[keyof INetMsgParams]['req'];
-        type INetSendResData = INetMsgParams[keyof INetMsgParams]['res'];
-        type INetDecodeData = { key: any, data: any, requestKey: INetSendKey }
-        type INetResCallBack = (data?: xt.INetSendResData) => any;
+        type INetRequestKey = keyof INetMsgParams
+        type INetRequestType = INetMsgParams[keyof INetMsgParams]['req']
+        type INetResponseType = INetMsgParams[keyof INetMsgParams]['res']
+        type INetDecodeData = { responseKey: INetResponseKey, data: any, requestKey: INetRequestKey }
+        type INetRequestCallBack = (data?: xt.INetResponseType) => any;
+        type INetResponseKey = keyof INetKeyPairParams
+        type INetResponseCallBack = (data?: INetMsgParams[INetKeyPairParams[INetResponseKey]]['res']) => any;
     }
 }
 
 export { }
 
-xt.netManger = xt.netManger || new NetManger()
+xt.netManager = xt.netManager || new NetManger()

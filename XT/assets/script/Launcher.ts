@@ -25,10 +25,15 @@ export class Launcher extends Component {
         let request = new NetProtoBufRequest().init();
         let heartPlugin = new NetHeartPlugin().init();
 
-        xt.netManger.init(client, codec, request, [heartPlugin]);
-        xt.netManger.connect(() => {
-            // xt.netManger.send('Abc', { id: 1 })
+        xt.netManager.init(client, codec, request, [heartPlugin]);
+        xt.netManager.connect(() => {
+            xt.netManager.send("None", (data) => {
+
+            })
         });
+        xt.netManager.bindResponseCallBack('None2',(data)=>{
+            console.log('bind');
+        })
         // xt.netManger.send("Abc", { id: 1 });
     }
 }
