@@ -42,11 +42,11 @@ export const methods: { [key: string]: (...any: any) => any } = {
             for (let key in comp.value) {
                 let valueData = comp.value[key]
                 let displayName = valueData?.displayName
-                if (displayName != '' && displayName != null && displayName.startsWith('@')
+                if (displayName != '' && displayName != null && displayName.startsWith('🔗')
                     && valueData.type != 'cc.Script'
                     && valueData.value?.uuid != null) {
                     let resUuid;
-                    let bindName = displayName.replace('@', '');
+                    let bindName = displayName.replace('🔗', '');
                     for (let n of nodeTree) {
                         if (n.name.value == bindName) {
                             if (valueData.type == 'cc.Node') {

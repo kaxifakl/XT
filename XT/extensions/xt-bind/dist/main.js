@@ -41,11 +41,11 @@ exports.methods = {
             for (let key in comp.value) {
                 let valueData = comp.value[key];
                 let displayName = valueData === null || valueData === void 0 ? void 0 : valueData.displayName;
-                if (displayName != '' && displayName != null && displayName.startsWith('@')
+                if (displayName != '' && displayName != null && displayName.startsWith('🔗')
                     && valueData.type != 'cc.Script'
                     && ((_a = valueData.value) === null || _a === void 0 ? void 0 : _a.uuid) != null) {
                     let resUuid;
-                    let bindName = displayName.replace('@', '');
+                    let bindName = displayName.replace('🔗', '');
                     for (let n of nodeTree) {
                         if (n.name.value == bindName) {
                             if (valueData.type == 'cc.Node') {

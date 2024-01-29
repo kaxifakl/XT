@@ -13,6 +13,8 @@ declare global {
         ui: IUI
         /**数据类 */
         data: IData
+        /**装饰器 */
+        decorator: IDecorator
     }
     interface IUtil { }
     interface IConfig { }
@@ -21,6 +23,7 @@ declare global {
     interface IUI { }
     interface IData { }
     interface IBundle { }
+    interface IDecorator { }
     namespace xt { }
 }
 

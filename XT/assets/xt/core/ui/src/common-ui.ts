@@ -3,7 +3,7 @@ import { BaseUI } from './base-ui';
 const { ccclass, property } = _decorator;
 
 interface IPluginUIData {
-    ui: xt.ui.BaseUI;
+    ui: xt.ui.PluginUI;
     parentNode: Node;
     param?: any;
     group?: string;
@@ -132,7 +132,7 @@ export class CommonUI<T = any> extends BaseUI<T> {
                         }
                     })
                 }
-                pluginUIData.ui = uiComp;
+                pluginUIData.ui = uiComp as xt.ui.PluginUI;
                 pluginUIData.state = true;
                 _callBack && _callBack(uiComp);
             });
@@ -179,9 +179,7 @@ export class CommonUI<T = any> extends BaseUI<T> {
         }
         this.pluginUIMap.forEach((data, key: string) => {
             if (data.ui) {
-                data.ui.onClose();
-                data.ui.removeAllListener();
-                data.ui.destroy();
+                data.ui.close();
             }
         })
         this.pluginUIMap = null;

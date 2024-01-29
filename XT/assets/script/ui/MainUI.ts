@@ -1,5 +1,6 @@
-import { _decorator, Button, Component, Node, Sprite } from 'cc';
+import { _decorator, Button, Component, Label, Node, Sprite } from 'cc';
 import { WindowUI } from '../../xt/core/ui/src/window-ui';
+import { QuickBind } from '../../xt/extern/x-bind/quick-bind';
 const { ccclass, property } = _decorator;
 
 declare global {
@@ -7,31 +8,18 @@ declare global {
     namespace xt.ui { type MainUI = InstanceType<typeof MainUI> }
 }
 
-@xt.prefabUrl('prefab/MainUI')
+@xt.decorator.setPrefab('prefab/MainUI')
 @ccclass('MainUI')
 export class MainUI extends WindowUI {
 
-    @property({
-        displayName: '@testBtn',
-        type: Button
-    })
+    @QuickBind('testBtn', Button)
     private testBtn: Button = null;
 
-    @property({
-        displayName: '@SpriteSplash',
-        type: Sprite
-    })
+    @QuickBind('SpriteSplash', Sprite)
     private sp: Sprite = null;
 
-    @property({
-        displayName: 'sp2',
-    })
-    private num: number = 0;
-
-    @property({
-        displayName: 'sp3',
-    })
-    private str2: string = '';
+    @QuickBind('a', Label)
+    private test: Label = null;
 
     start() {
         xt.eventManager.on('a', this.cb2, this); //监听事件
