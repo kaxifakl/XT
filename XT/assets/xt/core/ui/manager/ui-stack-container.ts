@@ -27,7 +27,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
                 comp.param = param;
                 comp.node.setParent(options.uiParentNode);
                 options?.finishCall?.(comp);
-            })
+            }, { parentNode: options.uiParentNode })
         }
     }
 
@@ -110,6 +110,10 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
     private destroyUI(ui: xt.ui.BaseUI): void {
         let className = js.getClassName(ui);
         ui.node.destroy();
+        if (ui.loaderKey) {
+            xt.loaderManager.releaseLoader(ui.loaderKey);
+            ui.loaderKey = null;
+        }
         this.uiMap.delete(className);
     }
 

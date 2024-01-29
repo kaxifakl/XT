@@ -46,7 +46,7 @@ export class XTComponent extends Component {
      * @param options 加载参数
      * @returns 
      */
-    public createComponentNode<T extends XTComponent>(clazz: xt.Constructor<T> | string, callBack: (comp: T) => void, options?: xt.ComponentCreateOptions): void {
+    public createComponentNode<T extends XTComponent>(clazz: xt.Constructor<T> | string, callBack: (comp: T) => void, options: xt.ComponentCreateOptions): void {
         let cls: xt.Constructor<T>;
         if (typeof clazz === 'string') {
             cls = js.getClassByName(clazz) as xt.Constructor<T>;
@@ -65,6 +65,9 @@ export class XTComponent extends Component {
         let className = js.getClassName(cls);
         let loader = xt.loaderManager.getLoader(options?.loaderKey || className);
         loader.load(prefabUrl, Prefab, (prefab: Prefab) => {
+            if (!isValid(options.parentNode, true)) {
+                return;
+            }
             let uiNode = instantiate(prefab);
             let comp = uiNode.getComponent(cls);
             if (!comp) {
@@ -95,13 +98,6 @@ export class XTComponent extends Component {
             }
         }, bundle);
     }
-
-    protected onDestroy(): void {
-        if (this.loaderKey) {
-            xt.loaderManager.releaseLoader(this.loaderKey);
-            this.loaderKey = null;
-        }
-    }
 }
 
 declare global {
@@ -117,6 +113,8 @@ declare global {
             loaderKey?: string;
             /**预制体地址 */
             prefabUrl?: string;
+            /**父节点地址 */
+            parentNode: Node;
         }
     }
 }

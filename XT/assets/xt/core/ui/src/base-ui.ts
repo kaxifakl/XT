@@ -1,4 +1,4 @@
-import { _decorator, Component, js, Node } from 'cc';
+import { _decorator, Component, isValid, js, Node } from 'cc';
 import { XTComponent } from '../../../common/xt-component';
 const { ccclass, property } = _decorator;
 
@@ -33,28 +33,28 @@ export class BaseUI<T = any> extends XTComponent {
      * @returns 
      */
     public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (uiComp: T) => void): void;
-     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-     * @param clazz 类名或类
-     * @param parentNode 父节点
-     * @param param 参数
-     * @returns 
-     */
+    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+    * @param clazz 类名或类
+    * @param parentNode 父节点
+    * @param param 参数
+    * @returns 
+    */
     public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param): void;
-     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-     * @param clazz 类名或类
-     * @param parentNode 父节点
-     * @param param 参数
-     * @param callBack 回调
-     * @returns 
-     */
+    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+    * @param clazz 类名或类
+    * @param parentNode 父节点
+    * @param param 参数
+    * @param callBack 回调
+    * @returns 
+    */
     public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param, callBack: (uiComp: T) => void): void;
-     /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-     * @param clazz 类名或类
-     * @param parentNode 父节点
-     * @param param 参数
-     * @param callBack 回调
-     * @returns 
-     */
+    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
+    * @param clazz 类名或类
+    * @param parentNode 父节点
+    * @param param 参数
+    * @param callBack 回调
+    * @returns 
+    */
     public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: Param | ((uiComp: T) => void), callBack?: (uiComp: T) => void): void {
         let _param = null;
         let _callback = null;
@@ -73,7 +73,7 @@ export class BaseUI<T = any> extends XTComponent {
             comp.param = _param;
             comp.node.parent = parentNode;
             _callback && _callback(comp);
-        }, { loaderKey: this.loaderKey });
+        }, { loaderKey: this.loaderKey, parentNode: parentNode });
     }
 }
 
