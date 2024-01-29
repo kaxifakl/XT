@@ -180,7 +180,7 @@ declare global {
              * @param uiComp 显示的UI
              * @returns 
              */
-            callBack?: (uiComp: T) => void;
+            finishCall?: (uiComp: T) => void;
             /**UI父节点,默认为UI根节点 */
             uiParentNode?: Node;
             /**预制体地址,默认由prefabUrl提供 */

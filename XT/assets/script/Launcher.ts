@@ -14,26 +14,26 @@ export class Launcher extends Component {
         xt.config.DEFAULT_BUNDLE = 'game';
         xt.util.loadBundles('game', () => {
             xt.uiManager.showUI(xt.ui.MainUI, null, {
-                callBack: (ui: xt.ui.MainUI) => {
+                finishCall: (ui: xt.ui.MainUI) => {
 
                 }
             })
         })
 
-        let client = new NetWebSocketClient().init({ url: "ws://127.0.0.1:8781" });
-        let codec = new NetProtoBufCodec().init();
-        let request = new NetProtoBufRequest().init();
-        let heartPlugin = new NetHeartPlugin().init();
+        // let client = new NetWebSocketClient().init({ url: "ws://127.0.0.1:8781" });
+        // let codec = new NetProtoBufCodec().init();
+        // let request = new NetProtoBufRequest().init();
+        // let heartPlugin = new NetHeartPlugin().init();
 
-        xt.netManager.init(client, codec, request, [heartPlugin]);
-        xt.netManager.connect(() => {
-            xt.netManager.send("None", (data) => {
+        // xt.netManager.init(client, codec, request, [heartPlugin]);
+        // xt.netManager.connect(() => {
+        //     xt.netManager.send("None", (data) => {
 
-            })
-        });
-        xt.netManager.bindResponseCallBack('None2',(data)=>{
-            console.log('bind');
-        })
+        //     })
+        // });
+        // xt.netManager.bindResponseCallBack('None2',(data)=>{
+        //     console.log('bind');
+        // })
         // xt.netManger.send("Abc", { id: 1 });
     }
 }

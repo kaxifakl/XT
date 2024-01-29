@@ -26,7 +26,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
                 //赋值初始化
                 comp.param = param;
                 comp.node.setParent(options.uiParentNode);
-                options?.callBack?.(comp);
+                options?.finishCall?.(comp);
             })
         }
     }
