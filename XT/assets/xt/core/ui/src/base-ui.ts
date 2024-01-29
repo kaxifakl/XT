@@ -15,8 +15,8 @@ export class BaseUI<T = any> extends XTComponent {
     /**UI关闭 */
     public close(callBack?: any): void {
         this.onClose();
-        xt.uiManager.closeUI(js.getClassName(this));
         this.removeAllListener();
+        xt.uiManager.closeUI(js.getClassName(this));
         callBack && callBack();
     }
 

@@ -109,10 +109,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
     /**销毁UI */
     private destroyUI(ui: xt.ui.BaseUI): void {
         let className = js.getClassName(ui);
-        ui.onClose();
-        ui.removeAllListener();
         ui.node.destroy();
-        xt.loaderManager.releaseLoader(className);
         this.uiMap.delete(className);
     }
 

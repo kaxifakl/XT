@@ -101,7 +101,6 @@ export class XTComponent extends Component {
             xt.loaderManager.releaseLoader(this.loaderKey);
             this.loaderKey = null;
         }
-        super.onDestroy();
     }
 }
 

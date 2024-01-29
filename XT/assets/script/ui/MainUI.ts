@@ -38,6 +38,8 @@ export class MainUI extends WindowUI {
         xt.eventManager.once('a', this.cb2, this); //单次监听事件
         xt.eventManager.emit('a'); //派发事件
         xt.eventManager.offByTargetAndKey(this, 'a');
+
+        this.scheduleOnce(() => { this.close() }, 3)
     }
 
     cb1(a, b, c, d, e) {
@@ -50,6 +52,10 @@ export class MainUI extends WindowUI {
 
     update(deltaTime: number) {
 
+    }
+
+    public onClose() {
+        console.log('close')
     }
 }
 
