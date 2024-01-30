@@ -4,11 +4,39 @@ const { ccclass, property } = _decorator;
 /**XT组件基类 */
 @ccclass('XTComponent')
 export class XTComponent extends Component {
-    public static __$prefabUrl: string = null;
-    public static __$bundle: string = null;
+    private static __$prefabUrl: string = null;
+    private static __$bundle: string = null;
 
+    private _loaderKey: string = null;
+    /**原始loaderKey,无需递归寻找 */
+    public get rawLoaderKey(): string {
+        return this._loaderKey;
+    }
     /**加载器Key */
-    public loaderKey: string = null;
+    public get loaderKey(): string {
+        if (this._loaderKey) {
+            return this._loaderKey;
+        }
+        this.findLoaderKeyFromParent();
+        return this._loaderKey;
+    }
+    public set loaderKey(value: string) {
+        this._loaderKey = value;
+    }
+
+    /**从父节点上寻找loaderKey */
+    private findLoaderKeyFromParent(): void {
+        let parent = this.node.parent
+        while (parent) {
+            let comp = this.node.parent.getComponent(XTComponent);
+            if (comp && comp.loaderKey) {
+                this._loaderKey = comp.loaderKey;
+                break;
+            } else {
+                parent = parent.parent;
+            }
+        }
+    }
 
     /**注册按钮点击事件
      * @param button 按钮组件
@@ -74,7 +102,7 @@ export class XTComponent extends Component {
                 xt.error('预制体未绑定脚本', prefabUrl, className);
                 return;
             }
-            comp.loaderKey = options?.loaderKey || className;
+            comp.loaderKey = options?.loaderKey;
             callBack && callBack(comp);
             //@ts-ignore
         }, cls.__$bundle)
