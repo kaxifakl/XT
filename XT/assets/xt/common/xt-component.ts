@@ -74,7 +74,7 @@ export class XTComponent extends Component {
      * @param options 加载参数
      * @returns 
      */
-    public createComponentNode<T extends XTComponent>(clazz: xt.Constructor<T> | string, callBack: (comp: T) => void, options: xt.ComponentCreateOptions): void {
+    public static createComponentNode<T extends XTComponent>(clazz: xt.Constructor<T> | string, callBack: (comp: T) => void, options: xt.ComponentCreateOptions): void {
         let cls: xt.Constructor<T>;
         if (typeof clazz === 'string') {
             cls = js.getClassByName(clazz) as xt.Constructor<T>;

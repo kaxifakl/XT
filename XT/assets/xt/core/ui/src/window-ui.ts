@@ -1,9 +1,9 @@
 
 import { _decorator } from 'cc';
-import { CommonUI } from './common-ui';
+import { BaseUI } from './base-ui';
 const { ccclass, property } = _decorator;
 @ccclass('WindowUI')
-export class WindowUI<T = any> extends CommonUI<T> {
+export class WindowUI<Param = any> extends BaseUI<Param> {
 }
 
 declare global {

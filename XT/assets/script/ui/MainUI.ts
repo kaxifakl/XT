@@ -31,7 +31,7 @@ export class MainUI extends WindowUI {
     }
 
     cb1(a, b, c, d, e) {
-
+        this.createSyncModule<MainUI>(xt.ui.MainUI, this.node, { a: 1 });
     }
 
     cb2() {

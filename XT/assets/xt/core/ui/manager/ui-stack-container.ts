@@ -17,7 +17,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
             this.setUIActive(ui, true);
         } else {
             xt.uiManager.showUIMask();
-            xt.XTComponent.prototype.createComponentNode(clazz, (comp: T) => {
+            xt.XTComponent.createComponentNode(clazz, (comp: T) => {
                 xt.uiManager.closeUIMask();
                 //处理先前UI
                 this.solveAnteriorUI(comp);

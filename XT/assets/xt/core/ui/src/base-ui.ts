@@ -1,61 +1,27 @@
 import { _decorator, Component, isValid, js, Node } from 'cc';
 import { XTComponent } from '../../../common/xt-component';
+import { SyncModule } from './sync-module';
 const { ccclass, property } = _decorator;
 
 /**UI基类 */
 @ccclass('BaseUI')
-export class BaseUI<T = any> extends XTComponent {
+export class BaseUI<Param = any> extends XTComponent {
     /**参数 */
-    public param: T = null;
+    public param: Param = null;
+
+    public updateView(param: Param): void {
+
+    }
 
     /**当UI销毁时调用 */
     public onClose(): any {
     }
 
-    /**UI关闭 */
-    public close(callBack?: any): void {
-        this.onClose();
-        this.removeAllListener();
-        xt.uiManager.closeUI(js.getClassName(this));
-        callBack && callBack();
-    }
-
-    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-     * @param clazz 类名或类
-     * @param parentNode 父节点
-     * @returns 
-     */
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node): void;
-    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-     * @param clazz 类名或类
-     * @param parentNode 父节点
-     * @param callBack 回调
-     * @returns 
-     */
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (uiComp: T) => void): void;
-    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-    * @param clazz 类名或类
-    * @param parentNode 父节点
-    * @param param 参数
-    * @returns 
-    */
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param): void;
-    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-    * @param clazz 类名或类
-    * @param parentNode 父节点
-    * @param param 参数
-    * @param callBack 回调
-    * @returns 
-    */
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: Param, callBack: (uiComp: T) => void): void;
-    /**异步创建BaseUI,所有继承BaseUI的prefab通过此接口创建
-    * @param clazz 类名或类
-    * @param parentNode 父节点
-    * @param param 参数
-    * @param callBack 回调
-    * @returns 
-    */
-    public createUI<Param = any, T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: Param | ((uiComp: T) => void), callBack?: (uiComp: T) => void): void {
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (uiComp: T) => void): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: any): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: any, callBack: (uiComp: T) => void): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: any | ((uiComp: T) => void), callBack?: (uiComp: T) => void): SyncModule<T> {
         let _param = null;
         let _callback = null;
         if (typeof callBack === 'function') {
@@ -68,12 +34,17 @@ export class BaseUI<T = any> extends XTComponent {
                 _param = param;
             }
         }
+        let module = new SyncModule<T>();
+        module.loadModule(clazz, parentNode, this.loaderKey, _param, _callback);
+        return module;
+    }
 
-        this.createComponentNode(clazz, (comp: T) => {
-            comp.param = _param;
-            comp.node.parent = parentNode;
-            _callback && _callback(comp);
-        }, { loaderKey: this.loaderKey, parentNode: parentNode });
+    /**UI关闭 */
+    public close(callBack?: any): void {
+        this.onClose();
+        this.removeAllListener();
+        xt.uiManager.closeUI(js.getClassName(this));
+        callBack && callBack();
     }
 }
 
