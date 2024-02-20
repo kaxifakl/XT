@@ -21,6 +21,9 @@ export class MainUI extends WindowUI {
     @QuickBind('a', Label)
     private test: Label = null;
 
+    @QuickBind('c')
+    private c: Node = null;
+
     start() {
         xt.eventManager.on('a', this.cb2, this); //监听事件
         xt.eventManager.once('a', this.cb2, this); //单次监听事件

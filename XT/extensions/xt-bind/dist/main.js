@@ -36,40 +36,51 @@ exports.methods = {
             }
             selectComps.push(comp);
         }
+        if (selectComps.length == 0) {
+            console.warn('该节点没有自定义组件');
+            return;
+        }
+        let resultArray = [];
         for (let i = 0; i < selectComps.length; i++) {
             let comp = selectComps[i];
             for (let key in comp.value) {
+                //@ts-ignore
                 let valueData = comp.value[key];
                 let displayName = valueData === null || valueData === void 0 ? void 0 : valueData.displayName;
                 if (displayName != '' && displayName != null && displayName.startsWith('🔗')
                     && valueData.type != 'cc.Script'
                     && ((_a = valueData.value) === null || _a === void 0 ? void 0 : _a.uuid) != null) {
                     let resUuid;
+                    let sameNameCount = 0;
                     let bindName = displayName.replace('🔗', '');
                     for (let n of nodeTree) {
                         if (n.name.value == bindName) {
                             if (valueData.type == 'cc.Node') {
-                                resUuid = n.uuid.value;
-                                break;
+                                if (!resUuid) {
+                                    resUuid = n.uuid.value;
+                                }
+                                else {
+                                    sameNameCount++;
+                                }
+                                continue;
                             }
                             else {
-                                let find = false;
                                 for (let c of n.__comps__) {
                                     if (c.cid == valueData.type) {
-                                        resUuid = c.value.uuid.value;
-                                        find = true;
-                                        break;
+                                        if (!resUuid) {
+                                            resUuid = c.value.uuid.value;
+                                        }
+                                        else {
+                                            sameNameCount++;
+                                        }
                                     }
-                                }
-                                if (find) {
-                                    break;
                                 }
                             }
                         }
                     }
                     if (!resUuid) {
-                        console.warn(`未找到 name:${bindName} type:${valueData.type} 的绑定节点`);
-                        return;
+                        resultArray.push({ key: key, succ: false, warn: `未找到类型为${valueData.type}的绑定`, sameCount: 0 });
+                        continue;
                     }
                     let res = await Editor.Message.request('scene', 'set-property', {
                         uuid: uuid,
@@ -81,13 +92,25 @@ exports.methods = {
                             }
                         }
                     });
-                    if (res) {
-                        console.log(`${key}绑定成功`);
-                    }
-                    else {
-                        console.warn(`${key}绑定失败`);
-                    }
+                    resultArray.push({ key: key, succ: !!res, warn: "property绑定失败", sameCount: sameNameCount });
                 }
+            }
+        }
+        console.log(`${node.name.value}绑定结果：\n`);
+        for (let result of resultArray) {
+            if (result.succ) {
+                let outStr = "";
+                outStr += `✔️${result.key}`;
+                if (result.sameCount > 0) {
+                    outStr += `\t(⚠️${result.sameCount}个同名节点)`;
+                }
+                console.log(outStr);
+            }
+            else {
+                let outStr = "";
+                outStr += `❌${result.key}`;
+                outStr += `\t(${result.warn})`;
+                console.log(outStr);
             }
         }
     }

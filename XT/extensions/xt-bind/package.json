@@ -11,7 +11,7 @@
     "author": "kaxifa",
     "editor": ">=3.7.3",
     "scripts": {
-        "build": "tsc -b",
+        "build": "tsc",
         "watch": "tsc -w"
     },
     "contributions": {
