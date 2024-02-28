@@ -28,7 +28,7 @@ export class SyncModule<T> {
         }, { loaderKey: loaderKey, parentNode: parentNode });
     }
 
-    updateView(param: any): void {
+    updateView(param?: any): void {
         this.param = param;
         if (this.module) {
             this.module.param = param;
