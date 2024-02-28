@@ -9,7 +9,7 @@ export class BaseUI<Param = any> extends XTComponent {
     /**参数 */
     public param: Param = null;
 
-    public updateView(param: Param): void {
+    public updateView(param?: Param): void {
 
     }
 

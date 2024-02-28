@@ -9,7 +9,7 @@ export class TestModule extends XTComponent {
     private testLabel: Label = null;
 
     start() {
-
+        console.log(this.testLabel);
     }
 
     update(deltaTime: number) {
