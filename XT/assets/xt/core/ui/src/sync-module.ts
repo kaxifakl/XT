@@ -2,7 +2,7 @@ import { Node, _decorator } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('SyncModule')
-export class SyncModule<T> {
+export class SyncModule<T extends xt.ui.BaseUI> {
     private clazz: xt.Constructor<T> | string = null;
     private param: any = null;
     private callBack?: (uiComp: T) => void = null;
@@ -36,7 +36,7 @@ export class SyncModule<T> {
      * 刷新显示
      * @param param 
      */
-    updateView(param?: any): void {
+    updateView(param?: T["param"]): void {
         if (this.module) {
             this.module.param = param || {};
             this.module.updateView(param);
