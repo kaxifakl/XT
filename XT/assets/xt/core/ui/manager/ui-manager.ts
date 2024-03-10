@@ -48,8 +48,6 @@ class UIManager {
             options = {} as xt.IUIOptions<T>;
         }
         if (options.uiParentNode == null) {
-            let superName = this.getSuperName(cls);
-            options.superName = superName;
             options.uiParentNode = this.uiParentNode;
         }
 
@@ -136,23 +134,6 @@ class UIManager {
         }
         container.getCurrentUI();
     }
-
-    /**获取该类的基类名，用于区分WindowUI和PopUI */
-    private getSuperName(cls: xt.Constructor<xt.ui.BaseUI>): string {
-        let superCls = js.getSuper(cls);
-        let superName = js.getClassName(superCls);
-        let windowClsName = js.getClassName(xt.ui.WindowUI);
-        let popClsName = js.getClassName(xt.ui.PopUI);
-        while (superCls != null) {
-            if (superName == windowClsName || superName == popClsName) {
-                superCls = null;
-            } else {
-                superCls = js.getSuper(superCls);
-                superName = js.getClassName(superCls);
-            }
-        }
-        return superName;
-    }
 }
 
 declare global {
@@ -180,13 +161,11 @@ declare global {
              * @param uiComp 显示的UI
              * @returns 
              */
-            callBack?: (uiComp: T) => void;
+            finishCall?: (uiComp: T) => void;
             /**UI父节点,默认为UI根节点 */
             uiParentNode?: Node;
             /**预制体地址,默认由prefabUrl提供 */
             prefabUrl?: string;
-            /**UI基类名,内部使用 */
-            superName?: string
         }
     }
 }

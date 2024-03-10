@@ -1,4 +1,5 @@
 import { js } from 'cc';
+import { BaseUIType } from '../src/ui-type';
 
 class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer {
 
@@ -13,20 +14,24 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
             let ui = this.uiStack.pop();
             this.solveAnteriorUI(ui);
             this.uiStack.push(ui);
-            ui.param = param;
+            ui.param = param || {};
             this.setUIActive(ui, true);
         } else {
             xt.uiManager.showUIMask();
-            xt.XTComponent.prototype.createComponentNode(clazz, (comp: T) => {
+            xt.XTComponent.createComponentNode(clazz, (comp: T) => {
                 xt.uiManager.closeUIMask();
                 //处理先前UI
                 this.solveAnteriorUI(comp);
                 this.uiStack.push(comp);
                 this.uiMap.set(className, this.uiStack.length - 1);
                 //赋值初始化
-                comp.param = param;
+                comp.param = param || {};
                 comp.node.setParent(options.uiParentNode);
-                options?.callBack?.(comp);
+                options?.finishCall?.(comp);
+            }, {
+                parentNode: options.uiParentNode,
+                loaderKey: className,
+                prefabUrl: options.prefabUrl
             })
         }
     }
@@ -72,12 +77,12 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
         if (this.uiStack.length === 0) {
             return;
         }
-        if (nextUI instanceof xt.ui.WindowUI) {
+        if (nextUI.uiType == BaseUIType.WindowUI) {
             //新的弹窗是窗口,循环关闭前一个UI,直到窗口UI
             for (let i = this.uiStack.length - 1; i >= 0; i--) {
                 let ui = this.uiStack[i];
                 this.setUIActive(ui, false);
-                if (ui instanceof xt.ui.WindowUI) {
+                if (ui.uiType == BaseUIType.WindowUI) {
                     break;
                 }
             }
@@ -92,7 +97,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
         for (let i = this.uiStack.length - 1; i >= 0; i--) {
             let ui = this.uiStack[i];
             this.setUIActive(ui, true);
-            if (ui instanceof xt.ui.WindowUI) {
+            if (ui.uiType == BaseUIType.WindowUI) {
                 break;
             }
         }
@@ -109,10 +114,15 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
     /**销毁UI */
     private destroyUI(ui: xt.ui.BaseUI): void {
         let className = js.getClassName(ui);
-        ui.onClose();
-        ui.removeAllListener();
-        ui.node.destroy();
-        xt.loaderManager.releaseLoader(className);
+        if (ui.overrideDestroy) {
+            ui.overrideDestroy();
+        } else {
+            ui.node.destroy();
+        }
+        if (ui.rawLoaderKey) {
+            xt.loaderManager.releaseLoader(ui.rawLoaderKey);
+            ui.loaderKey = null;
+        }
         this.uiMap.delete(className);
     }
 

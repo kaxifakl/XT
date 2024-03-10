@@ -17,6 +17,9 @@ class AssetLoader {
     /**文件夹资源的缓存 */
     public arrayCacheMap: Map<string, Array<Asset>> = new Map();
 
+    /**延迟释放时间,有助于减少资源重复释放加载,默认3秒,当值<=0时表示立刻释放 */
+    public static releaseDelayTime: number = 3;
+
     constructor(key?: string) {
         this.key = key || xt.symbolKey.getKey();
     }
@@ -155,7 +158,7 @@ class AssetLoader {
         let asset = this.cacheMap.values();
         let assets = this.arrayCacheMap.values();
 
-        xt.timerManager.addTimer(3, () => {
+        let releaseCall = () => {
             for (let a of asset) {
                 a.decRef();
             }
@@ -164,7 +167,14 @@ class AssetLoader {
                     b.decRef();
                 }
             }
-        }, true);
+        }
+        if (AssetLoader.releaseDelayTime > 0) {
+            xt.timerManager.addTimer(AssetLoader.releaseDelayTime, () => {
+                releaseCall();
+            }, true);
+        } else {
+            releaseCall();
+        }
 
         this.cacheMap.clear();
         this.arrayCacheMap.clear();

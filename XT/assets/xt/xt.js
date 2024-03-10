@@ -5,14 +5,15 @@ let _xt = {
     game: {},
     ui: {},
     data: {},
+    decorator: {},
 };
 window['xt'] = window['xt'] || _xt;
 
-function prefabUrl(prefabUrl, bundle) {
+function setPrefab(prefabUrl, bundle) {
     return (target) => {
         target.__$prefabUrl = prefabUrl;
         target.__$bundle = bundle;
     };
 }
 
-_xt.prefabUrl = prefabUrl;
+_xt.decorator.setPrefab = setPrefab;
