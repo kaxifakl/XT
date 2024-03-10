@@ -13,12 +13,14 @@ declare global {
 @ccclass('MainUI')
 export class MainUI extends WindowUI {
 
-    @QuickBind('testBtn', Button)
-    private testBtn: Button = null;
-    @QuickBind('SpriteSplash', Sprite)
-    private sp: Sprite = null;
-    @QuickBind('a', Label)
-    private test: Label = null;
+    // @QuickBind('testBtn', Button)
+    // private testBtn: Button = null;
+    // @QuickBind('SpriteSplash', Sprite)
+    // private sp: Sprite = null;
+    // @QuickBind('a', Label)
+    // private test: Label = null;
+    @QuickBind("TestModule", xt.ui.TestModule)
+    private testModule: xt.ui.TestModule = null;
 
     start() {
         this.updateView()

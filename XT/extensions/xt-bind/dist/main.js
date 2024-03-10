@@ -13,7 +13,6 @@ async function getNodeTree(uuid) {
     }
     return data;
 }
-let excludeType = ['cc.Script', 'Number', 'String'];
 /**
  * @en Registration method for the main process of Extension
  * @zh 为扩展的主进程的注册方法
@@ -37,7 +36,7 @@ exports.methods = {
             selectComps.push(comp);
         }
         if (selectComps.length == 0) {
-            console.warn('该节点没有自定义组件');
+            console.warn('该节点没有快速绑定数据');
             return;
         }
         let resultArray = [];
@@ -66,9 +65,21 @@ exports.methods = {
                             }
                             else {
                                 for (let c of n.__comps__) {
-                                    if (c.cid == valueData.type) {
+                                    let tempCid = c.cid;
+                                    let tempValue = c.value.uuid.value;
+                                    if (!tempCid.includes('cc.')) {
+                                        let compUUID = Editor.Utils.UUID.decompressUUID(tempCid);
+                                        if (compUUID) {
+                                            let compData = await Editor.Message.request('asset-db', 'query-asset-info', compUUID);
+                                            if (compData) {
+                                                tempCid = compData.name.replace('.ts', '');
+                                                tempValue = tempCid;
+                                            }
+                                        }
+                                    }
+                                    if (tempCid == valueData.type) {
                                         if (!resUuid) {
-                                            resUuid = c.value.uuid.value;
+                                            resUuid = tempValue;
                                         }
                                         else {
                                             sameNameCount++;
