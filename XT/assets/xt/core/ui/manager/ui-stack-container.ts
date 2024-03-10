@@ -14,7 +14,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
             let ui = this.uiStack.pop();
             this.solveAnteriorUI(ui);
             this.uiStack.push(ui);
-            ui.param = param;
+            ui.param = param || {};
             this.setUIActive(ui, true);
         } else {
             xt.uiManager.showUIMask();
@@ -25,7 +25,7 @@ class UIStackContainer extends xt.ui.BaseUIContainer implements xt.IUIContainer 
                 this.uiStack.push(comp);
                 this.uiMap.set(className, this.uiStack.length - 1);
                 //赋值初始化
-                comp.param = param;
+                comp.param = param || {};
                 comp.node.setParent(options.uiParentNode);
                 options?.finishCall?.(comp);
             }, {

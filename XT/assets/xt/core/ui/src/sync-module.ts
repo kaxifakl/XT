@@ -10,7 +10,7 @@ export class SyncModule<T> {
     private init: boolean = false;
     private active: boolean = true;
 
-    loadModule<Param = any, T extends xt.ui.BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, loaderKey: string, param?: Param, callBack?: (uiComp: T) => void) {
+    loadModule<Param = any, T extends xt.ui.BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, loaderKey: string, param?: Param, callBack?: (module: T) => void) {
         if (this.init) {
             xt.warn('该异步模块已加载', this);
             return;
@@ -21,11 +21,13 @@ export class SyncModule<T> {
         this.callBack = callBack as any;
         xt.XTComponent.createComponentNode(clazz, (comp: T) => {
             this.module = comp;
-            comp.param = this.param;
+            comp.param = this.param || {};
+            this.param = null;
             comp.node.parent = parentNode;
             comp.node.active = this.active;
             if (this.callBack) {
                 this.callBack(comp as any);
+                this.callBack = null;
             }
         }, { loaderKey: loaderKey, parentNode: parentNode });
     }
@@ -35,10 +37,11 @@ export class SyncModule<T> {
      * @param param 
      */
     updateView(param?: any): void {
-        this.param = param;
         if (this.module) {
-            this.module.param = param;
-            this.module.updateView(this.param);
+            this.module.param = param || {};
+            this.module.updateView(param);
+        } else {
+            this.param = param;
         }
     }
 

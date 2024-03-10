@@ -10,7 +10,7 @@ export class BaseUI<Param = any> extends XTComponent {
     /**UI类型 */
     public uiType: BaseUIType = null;
     /**参数 */
-    public param: Param = null;
+    public param: Param = {} as any;
     /**重写ui-manager中销毁ui的方式 */
     public overrideDestroy: () => void = null;
 
@@ -23,10 +23,10 @@ export class BaseUI<Param = any> extends XTComponent {
     }
 
     public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node): SyncModule<T>;
-    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (uiComp: T) => void): SyncModule<T>;
-    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: any): SyncModule<T>;
-    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: any, callBack: (uiComp: T) => void): SyncModule<T>;
-    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: any | ((uiComp: T) => void), callBack?: (uiComp: T) => void): SyncModule<T> {
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, callBack: (module: T) => void): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: T['param']): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param: T['param'], callBack: (module: T) => void): SyncModule<T>;
+    public createSyncModule<T extends BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, param?: T['param'] | ((module: T) => void), callBack?: (module: T) => void): SyncModule<T> {
         let _param = null;
         let _callback = null;
         if (typeof callBack === 'function') {
