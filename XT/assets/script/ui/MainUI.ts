@@ -21,6 +21,10 @@ export class MainUI extends WindowUI {
 
     start() {
         this.updateView()
+
+        this.createSyncModule(xt.ui.TestModule, this.node, { num: 1 }, (module) => {
+            module.node.setPosition(200, 0)
+        });
     }
 }
 
