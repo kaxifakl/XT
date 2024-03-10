@@ -1,6 +1,7 @@
 import { _decorator, Button, Component, Label, Node, Sprite } from 'cc';
 import { WindowUI } from '../../xt/core/ui/src/window-ui';
 import { QuickBind } from '../../xt/extern/x-bind/quick-bind';
+import { TestModule } from './TestModule';
 const { ccclass, property } = _decorator;
 
 declare global {
@@ -22,9 +23,10 @@ export class MainUI extends WindowUI {
     start() {
         this.updateView()
 
-        this.createSyncModule(xt.ui.TestModule, this.node, { num: 1 }, (module) => {
+        let testModule2 = this.createSyncModule(xt.ui.TestModule, this.node, { num: 1 }, (module) => {
             module.node.setPosition(200, 0)
         });
+        testModule2.updateView({ num: 1 });
     }
 }
 

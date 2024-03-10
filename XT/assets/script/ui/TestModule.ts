@@ -14,7 +14,7 @@ interface TestModuleParam {
 
 @xt.decorator.setPrefab("prefab/TestModule")
 @ccclass('TestModule')
-export class TestModule<Param extends TestModuleParam> extends ModuleUI<TestModuleParam> {
+export class TestModule<Param extends TestModuleParam = TestModuleParam> extends ModuleUI<TestModuleParam> {
     @QuickBind('Label', Label)
     private testLabel: Label = null;
 
