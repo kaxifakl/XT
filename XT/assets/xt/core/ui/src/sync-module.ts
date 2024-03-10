@@ -8,6 +8,7 @@ export class SyncModule<T> {
     private callBack?: (uiComp: T) => void = null;
     private module: xt.ui.BaseUI = null;
     private init: boolean = false;
+    private active: boolean = true;
 
     loadModule<Param = any, T extends xt.ui.BaseUI = any>(clazz: xt.Constructor<T> | string, parentNode: Node, loaderKey: string, param?: Param, callBack?: (uiComp: T) => void) {
         if (this.init) {
@@ -22,17 +23,33 @@ export class SyncModule<T> {
             this.module = comp;
             comp.param = this.param;
             comp.node.parent = parentNode;
+            comp.node.active = this.active;
             if (this.callBack) {
                 this.callBack(comp as any);
             }
         }, { loaderKey: loaderKey, parentNode: parentNode });
     }
 
+    /**
+     * 刷新显示
+     * @param param 
+     */
     updateView(param?: any): void {
         this.param = param;
         if (this.module) {
             this.module.param = param;
             this.module.updateView(this.param);
+        }
+    }
+
+    /**
+     * 设置显示和隐藏
+     * @param active 
+     */
+    setActive(active: boolean): void {
+        this.active = active;
+        if (this.module) {
+            this.module.node.active = active;
         }
     }
 }

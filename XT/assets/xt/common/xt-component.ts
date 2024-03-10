@@ -6,6 +6,7 @@ const { ccclass, property } = _decorator;
 export class XTComponent extends Component {
     private static __$prefabUrl: string = null;
     private static __$bundle: string = null;
+    protected className: string | null = null;
 
     private _loaderKey: string = null;
     /**原始loaderKey,无需递归寻找 */
@@ -102,6 +103,7 @@ export class XTComponent extends Component {
                 xt.error('预制体未绑定脚本', prefabUrl, className);
                 return;
             }
+            comp.className = className;
             comp.loaderKey = options?.loaderKey;
             callBack && callBack(comp);
             //@ts-ignore
