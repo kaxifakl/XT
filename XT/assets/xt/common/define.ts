@@ -1,14 +1,14 @@
-import { AssetManager } from "cc";
+import { AssetManager, __private } from "cc";
 
 declare global {
-    interface IXT {
+    interface IDecorator {
         /**
-         * UI 的预制体路径
+         * 设置UI的预制体路径
          * @param prefabUrl 可根据情况使用不同的资源路径 
          * @param bundle 
          * @returns 
         */
-        prefabUrl: (prefabUrl: string, bundle?: string) => any
+        setPrefab: (prefabUrl: string, bundle?: string) => any
     }
     namespace xt {
         type Constructor<T> = new (...args: any[]) => T;

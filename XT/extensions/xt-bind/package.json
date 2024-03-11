@@ -1,6 +1,6 @@
 {
     "package_version": 2,
-    "version": "1.0.0",
+    "version": "1.0.2",
     "name": "xt-bind",
     "description": "i18n:xt-bind.description",
     "main": "./dist/main.js",
@@ -11,7 +11,7 @@
     "author": "kaxifa",
     "editor": ">=3.7.3",
     "scripts": {
-        "build": "tsc -b",
+        "build": "tsc",
         "watch": "tsc -w"
     },
     "contributions": {

@@ -1,8 +1,10 @@
 import { _decorator } from 'cc';
-import { CommonUI } from './common-ui';
+import { BaseUI } from './base-ui';
+import { BaseUIType } from './ui-type';
 const { ccclass, property } = _decorator;
 @ccclass('PopUI')
-export class PopUI<T = any> extends CommonUI<T> {
+export class PopUI<Param = any> extends BaseUI<Param> {
+    public uiType: BaseUIType = BaseUIType.PopUI;
 }
 
 declare global {

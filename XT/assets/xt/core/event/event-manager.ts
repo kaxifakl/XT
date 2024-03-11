@@ -51,6 +51,8 @@ class EventManager {
         let triggerData = handlerMap.get(handler)
         if (!triggerData) {
             handlerMap.set(handler, { handler: handler, once: once });
+        } else {
+            console.warn('该事件重复注册,已忽略:', key, handler, target, once);
         }
 
         let eventTargetSet = this.eventTargetSetMap.get(key);
@@ -82,7 +84,10 @@ class EventManager {
             return;
         }
         handlerMap.delete(handler);
-        this.checkEmpty(key, target, handlerMap, eventHandlerMap);
+        if (handlerMap.size == 0) {
+            this.deleteEventHandlerMap(key, target, eventHandlerMap);
+            this.deleteTargetInEventTargetSet(key, target);
+        }
     }
 
     /**取消target上所有事件
@@ -92,16 +97,18 @@ class EventManager {
         let eventHandlerMap = this.eventHandlerMapMap.get(target);
         if (eventHandlerMap) {
             eventHandlerMap.forEach((handlerMap, key) => {
-                let eventTargetSet = this.eventTargetSetMap.get(key);
-                if (eventTargetSet) {
-                    eventTargetSet.delete(target);
-                    if (eventTargetSet.size === 0) {
-                        this.eventTargetSetMap.delete(key);
-                    }
-                }
+                this.deleteTargetInEventTargetSet(key, target);
             })
             this.eventHandlerMapMap.delete(target);
         }
+    }
+
+    public offByTargetAndKey(target: Object, key: string): void {
+        let eventHandlerMap = this.eventHandlerMapMap.get(target);
+        if (eventHandlerMap) {
+            this.deleteEventHandlerMap(key, target, eventHandlerMap);
+        }
+        this.deleteTargetInEventTargetSet(key, target);
     }
 
     /**派发事件
@@ -146,14 +153,25 @@ class EventManager {
                 handlerMap.delete(handlerType);
             }
         })
-        this.checkEmpty(key, target, handlerMap, eventHandlerMap);
+        if (handlerMap.size === 0) {
+            this.deleteEventHandlerMap(key, target, eventHandlerMap);
+            this.deleteTargetInEventTargetSet(key, target);
+        }
     }
 
-    private checkEmpty(key: string, target: Object, handlerMap: Map<xt.EventHandler, TriggerData>, eventHandlerMap: EventHandlerMap): void {
-        if (handlerMap.size === 0) {
-            eventHandlerMap.delete(key);
-            if (eventHandlerMap.size === 0) {
-                this.eventHandlerMapMap.delete(target);
+    private deleteEventHandlerMap(key: string, target: Object, eventHandlerMap: EventHandlerMap): void {
+        eventHandlerMap.delete(key);
+        if (eventHandlerMap.size === 0) {
+            this.eventHandlerMapMap.delete(target);
+        }
+    }
+
+    private deleteTargetInEventTargetSet(key: string, target: Object): void {
+        let eventTargetSet = this.eventTargetSetMap.get(key);
+        if (eventTargetSet) {
+            eventTargetSet.delete(target);
+            if (eventTargetSet.size === 0) {
+                this.eventTargetSetMap.delete(key);
             }
         }
     }

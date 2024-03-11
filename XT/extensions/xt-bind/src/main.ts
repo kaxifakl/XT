@@ -1,3 +1,5 @@
+declare let Editor: any;
+
 async function getNodeTree(uuid: string) {
     let data: any[] = [];
     let node = await Editor.Message.request('scene', 'query-node', uuid);
@@ -10,8 +12,6 @@ async function getNodeTree(uuid: string) {
     }
     return data;
 }
-
-let excludeType = ['cc.Script', 'Number', 'String']
 
 /**
  * @en Registration method for the main process of Extension
@@ -37,38 +37,61 @@ export const methods: { [key: string]: (...any: any) => any } = {
             selectComps.push(comp);
         }
 
+        if (selectComps.length == 0) {
+            console.warn('该节点没有快速绑定数据');
+            return;
+        }
+
+        let resultArray = [];
+
         for (let i = 0; i < selectComps.length; i++) {
             let comp = selectComps[i]
-            for (let key in comp.value) {
+            for (let key in comp.value as any) {
+                //@ts-ignore
                 let valueData = comp.value[key]
                 let displayName = valueData?.displayName
-                if (displayName != '' && displayName != null
+                if (displayName != '' && displayName != null && displayName.startsWith('🔗')
                     && valueData.type != 'cc.Script'
                     && valueData.value?.uuid != null) {
                     let resUuid;
+                    let sameNameCount = 0;
+                    let bindName = displayName.replace('🔗', '');
                     for (let n of nodeTree) {
-                        if (n.name.value == displayName) {
+                        if (n.name.value == bindName) {
                             if (valueData.type == 'cc.Node') {
-                                resUuid = n.uuid.value;
-                                break;
-                            } else {
-                                let find = false;
-                                for (let c of n.__comps__) {
-                                    if (c.cid == valueData.type) {
-                                        resUuid = c.value.uuid.value;
-                                        find = true;
-                                        break;
-                                    }
+                                if (!resUuid) {
+                                    resUuid = n.uuid.value;
+                                } else {
+                                    sameNameCount++;
                                 }
-                                if (find) {
-                                    break;
+                                continue;
+                            } else {
+                                for (let c of n.__comps__) {
+                                    let tempCid = c.cid;
+                                    let tempValue = c.value.uuid.value;
+                                    if (!tempCid.includes('cc.')) {
+                                        let compUUID = Editor.Utils.UUID.decompressUUID(tempCid)
+                                        if (compUUID) {
+                                            let compData = await Editor.Message.request('asset-db', 'query-asset-info', compUUID)
+                                            if (compData) {
+                                                tempCid = compData.name.replace('.ts', '');
+                                            }
+                                        }
+                                    }
+                                    if (tempCid == valueData.type) {
+                                        if (!resUuid) {
+                                            resUuid = tempValue;
+                                        } else {
+                                            sameNameCount++;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                     if (!resUuid) {
-                        console.warn(`未找到 name:${displayName} type:${valueData.type} 的绑定节点`);
-                        return;
+                        resultArray.push({ key: `${bindName}🔗${key}`, succ: false, warn: `未找到类型为${valueData.type}的绑定`, sameCount: 0, bindName: bindName })
+                        continue;
                     }
                     let res = await Editor.Message.request('scene', 'set-property', {
                         uuid: uuid,
@@ -80,12 +103,26 @@ export const methods: { [key: string]: (...any: any) => any } = {
                             }
                         }
                     });
-                    if (res) {
-                        console.log(`${key}绑定成功`);
-                    } else {
-                        console.warn(`${key}绑定失败`);
-                    }
+
+                    resultArray.push({ key: `${bindName}🔗${key}`, succ: !!res, warn: "property绑定失败", sameCount: sameNameCount + 1, bindName: bindName });
                 }
+            }
+        }
+
+        console.log(`${node.name.value}绑定结果：\n`);
+        for (let result of resultArray) {
+            if (result.succ) {
+                let outStr = "";
+                outStr += `✔️${result.key}`;
+                if (result.sameCount > 1) {
+                    outStr += `(⚠️${result.sameCount}个同名为${result.bindName}的节点)`;
+                }
+                console.log(outStr);
+            } else {
+                let outStr = "";
+                outStr += `❌${result.key}`;
+                outStr += `\t(${result.warn})`;
+                console.log(outStr);
             }
         }
     }
