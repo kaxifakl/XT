@@ -29,7 +29,7 @@ class UIManager {
      * @param options 参数
      * @returns 
      */
-    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T> | string, param?: any, options?: xt.IUIOptions<T>): void {
+    public showUI<T extends xt.ui.BaseUI>(clazz: xt.Constructor<T> | string, param?: T['param'], options?: xt.IUIOptions<T>): void {
         let containerType = options?.containerType || this.DEFAULT_CONTAINER;
         let container = this.uiContainerMap.get(containerType);
         if (container == null) {
