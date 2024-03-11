@@ -75,7 +75,6 @@ export const methods: { [key: string]: (...any: any) => any } = {
                                             let compData = await Editor.Message.request('asset-db', 'query-asset-info', compUUID)
                                             if (compData) {
                                                 tempCid = compData.name.replace('.ts', '');
-                                                tempValue = tempCid;
                                             }
                                         }
                                     }
@@ -91,7 +90,7 @@ export const methods: { [key: string]: (...any: any) => any } = {
                         }
                     }
                     if (!resUuid) {
-                        resultArray.push({ key: key, succ: false, warn: `未找到类型为${valueData.type}的绑定`, sameCount: 0 })
+                        resultArray.push({ key: `${bindName}🔗${key}`, succ: false, warn: `未找到类型为${valueData.type}的绑定`, sameCount: 0, bindName: bindName })
                         continue;
                     }
                     let res = await Editor.Message.request('scene', 'set-property', {
@@ -105,7 +104,7 @@ export const methods: { [key: string]: (...any: any) => any } = {
                         }
                     });
 
-                    resultArray.push({ key: key, succ: !!res, warn: "property绑定失败", sameCount: sameNameCount });
+                    resultArray.push({ key: `${bindName}🔗${key}`, succ: !!res, warn: "property绑定失败", sameCount: sameNameCount + 1, bindName: bindName });
                 }
             }
         }
@@ -115,8 +114,8 @@ export const methods: { [key: string]: (...any: any) => any } = {
             if (result.succ) {
                 let outStr = "";
                 outStr += `✔️${result.key}`;
-                if (result.sameCount > 0) {
-                    outStr += `\t(⚠️${result.sameCount}个同名节点)`;
+                if (result.sameCount > 1) {
+                    outStr += `(⚠️${result.sameCount}个同名为${result.bindName}的节点)`;
                 }
                 console.log(outStr);
             } else {
