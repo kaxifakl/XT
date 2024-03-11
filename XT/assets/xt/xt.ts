@@ -22,7 +22,7 @@ declare global {
     interface IGame { }
     interface IUI { }
     interface IData { }
-    interface IBundle { }
+    interface IManager { }
     interface IDecorator { }
     namespace xt { }
 }

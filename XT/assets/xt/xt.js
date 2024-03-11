@@ -6,6 +6,7 @@ let _xt = {
     ui: {},
     data: {},
     decorator: {},
+    manager: {}
 };
 window['xt'] = window['xt'] || _xt;
 
