@@ -1,4 +1,4 @@
-import { Node, _decorator } from 'cc';
+import { Node, _decorator, isValid } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('SyncModule')
@@ -20,6 +20,9 @@ export class SyncModule<T extends xt.ui.BaseUI> {
         this.param = param;
         this.callBack = callBack as any;
         xt.XTComponent.createComponentNode(clazz, (comp: T) => {
+            if (!isValid(parentNode, true)) {
+                return;
+            }
             this.module = comp;
             comp.param = this.param || {};
             this.param = null;
