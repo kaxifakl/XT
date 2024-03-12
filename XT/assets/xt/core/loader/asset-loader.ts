@@ -119,7 +119,6 @@ class AssetLoader {
         if (!bundleAsset) {
             return;
         }
-        url = adapterUrl(url, type);
         let cacheKey = getCacheKey(bundle, type, url);
         let cacheAsset = this.arrayCacheMap.get(cacheKey);
         if (cacheAsset != null) {
@@ -179,6 +178,38 @@ class AssetLoader {
         this.cacheMap.clear();
         this.arrayCacheMap.clear();
         this.flag++;
+    }
+
+    /**
+     * 立刻释放资源
+     * @param bundle 
+     * @param type 
+     * @param url 
+     */
+    public releaseAssetImmediately<T>(bundle: string, type: xt.Constructor<T>, url: string): void {
+        let cacheKey = getCacheKey(bundle, type, url)
+        let asset = this.cacheMap.get(cacheKey);
+        if (asset) {
+            asset.decRef();
+            this.cacheMap.delete(cacheKey);
+        }
+    }
+
+    /**
+     * 立刻释放文件夹资源
+     * @param bundle 
+     * @param type 
+     * @param url 
+     */
+    public releaseDirImmediately<T>(bundle: string, type: xt.Constructor<T>, url: string): void {
+        let cacheKey = getCacheKey(bundle, type, url)
+        let assets = this.arrayCacheMap.get(cacheKey);
+        if (assets) {
+            for (let asset of assets) {
+                asset.decRef();
+            }
+            this.arrayCacheMap.delete(cacheKey);
+        }
     }
 }
 
