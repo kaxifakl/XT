@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unload = exports.load = exports.methods = void 0;
+exports.methods = void 0;
+exports.load = load;
+exports.unload = unload;
 async function getNodeTree(uuid) {
     let data = [];
     let node = await Editor.Message.request('scene', 'query-node', uuid);
@@ -51,7 +53,7 @@ exports.methods = {
                     && ((_a = valueData.value) === null || _a === void 0 ? void 0 : _a.uuid) != null) {
                     let resUuid;
                     let sameNameCount = 0;
-                    let bindName = displayName.replace('🔗', '');
+                    let bindName = displayName.replace('🔗', '').replace(/\(.*?\)/, "");
                     for (let n of nodeTree) {
                         if (n.name.value == bindName) {
                             if (valueData.type == 'cc.Node') {
@@ -130,10 +132,8 @@ exports.methods = {
  * @zh 扩展加载完成后触发的钩子
  */
 function load() { }
-exports.load = load;
 /**
  * @en Hooks triggered after extension uninstallation is complete
  * @zh 扩展卸载完成后触发的钩子
  */
 function unload() { }
-exports.unload = unload;
