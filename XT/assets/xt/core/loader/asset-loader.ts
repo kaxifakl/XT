@@ -59,7 +59,7 @@ class AssetLoader {
             return;
         }
         url = adapterUrl(url, type);
-        let cacheKey = getCacheKey(bundle, type, url);
+        let cacheKey = getCacheKey(_bundle, type, url);
         let cacheAsset = this.cacheMap.get(cacheKey);
         if (cacheAsset != null) {
             _onFinish?.(cacheAsset as T);
@@ -151,11 +151,24 @@ class AssetLoader {
     }
 
     /**
+     * 获取资源
+     * @param type 资源类型
+     * @param url  资源地址
+     * @param bundle AssetBundle名
+     * @returns 
+     */
+    public getAsset<T extends Asset>(type: xt.Constructor<T>, url: string, bundle?: string): T | null {
+        let cacheKey = getCacheKey(bundle, type, url);
+        let asset = this.cacheMap.get(cacheKey);
+        return asset as T;
+    }
+
+    /**
      * 释放资源加载器,默认延时3秒释放资源
      */
     public release() {
-        let asset = this.cacheMap.values();
-        let assets = this.arrayCacheMap.values();
+        let asset = Array.from(this.cacheMap.values());
+        let assets = Array.from(this.arrayCacheMap.values());
 
         let releaseCall = () => {
             for (let a of asset) {
